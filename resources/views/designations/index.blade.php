@@ -1,0 +1,462 @@
+@extends('layouts.app')
+
+@push('styles')
+<style>
+    .settings-hero {
+        background: linear-gradient(135deg, #1E293B 0%, #0F172A 50%, #334155 100%);
+        border-radius: 20px;
+        padding: 1.5rem 2rem;
+        color: #ffffff;
+        margin-bottom: 1.75rem;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.25);
+    }
+
+    /* Compact Color-Themed KPI Cards */
+    .kpi-stat-card-v3 {
+        border-radius: 18px;
+        padding: 1rem 1.25rem;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 100%;
+    }
+
+    .kpi-stat-card-v3:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+    }
+
+    .kpi-stat-card-v3.theme-indigo {
+        background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+        border: 1.5px solid #C7D2FE;
+    }
+
+    .kpi-stat-card-v3.theme-emerald {
+        background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+        border: 1.5px solid #A7F3D0;
+    }
+
+    .kpi-stat-card-v3.theme-amber {
+        background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+        border: 1.5px solid #FDE68A;
+    }
+
+    .kpi-label-sm {
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .kpi-number-sm {
+        font-size: 1.45rem;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-top: 0.15rem;
+    }
+
+    /* Organized Directory Table */
+    .directory-card {
+        background: #ffffff;
+        border-radius: 20px;
+        border: 1px solid #EFEFF7;
+        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+
+    .table-directory {
+        border-collapse: separate;
+        border-spacing: 0;
+        width: 100%;
+        margin-bottom: 0;
+    }
+
+    .table-directory thead th {
+        background: linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%);
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: #475569;
+        padding: 0.95rem 1.15rem;
+        border-bottom: 1.5px solid #E2E8F0;
+        white-space: nowrap;
+    }
+
+    .table-directory tbody tr {
+        transition: all 0.2s ease;
+        border-bottom: 1px solid #F1F5F9;
+    }
+
+    .table-directory tbody tr:hover {
+        background-color: #F8FAFC !important;
+        box-shadow: inset 3px 0 0 #3B82F6;
+    }
+
+    .table-directory tbody td {
+        padding: 0.95rem 1.15rem;
+        vertical-align: middle;
+    }
+
+    /* Avatar Stack Component */
+    .avatar-stack-group {
+        display: inline-flex;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .avatar-stack-item {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        border: 2px solid #ffffff;
+        object-fit: cover;
+        margin-left: -8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .avatar-stack-item:first-child {
+        margin-left: 0;
+    }
+
+    .status-badge-dot {
+        font-size: 0.72rem;
+        font-weight: 800;
+        padding: 0.25rem 0.7rem;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .status-badge-dot.active {
+        background: #DCFCE7;
+        color: #15803D;
+        border: 1px solid #BBF7D0;
+    }
+
+    .status-dot-pulse {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        display: inline-block;
+        background-color: #16A34A;
+    }
+</style>
+@endpush
+
+@section('content')
+<!-- Hero Header -->
+<div class="settings-hero">
+    <div class="row align-items-center g-3">
+        <div class="col-12 col-md-8">
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <span class="badge rounded-pill bg-white bg-opacity-20 text-white fs-8 px-2.5 py-1">
+                    <i class="bi bi-person-badge-fill me-1"></i> Job Titles & Roles Structure
+                </span>
+                <span class="fs-8 text-white-50">• System Settings</span>
+            </div>
+            <h3 class="mb-1 fw-extrabold text-white" style="letter-spacing: -0.02em;">
+                Designations & Job Titles Directory
+            </h3>
+            <p class="mb-0 text-white-50 fs-7">
+                Manage job designations, seniority levels, department scopes, and employee position ranks.
+            </p>
+        </div>
+        <div class="col-12 col-md-4 text-md-end">
+            <button class="btn btn-light rounded-pill px-4 py-2 fw-bold text-dark fs-8 shadow-sm" data-bs-toggle="modal" data-bs-target="#createDesignationModal">
+                <i class="bi bi-plus-circle-fill me-1" style="color: #2563EB;"></i> Add Designation
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Compact Different-Color KPI Summary Row -->
+<div class="row g-3 mb-4">
+    <!-- Card 1: Indigo Theme -->
+    <div class="col-12 col-sm-6 col-xl-4">
+        <div class="kpi-stat-card-v3 theme-indigo">
+            <div class="d-flex align-items-center gap-2.5">
+                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: #ffffff; color: #4F46E5; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+                    <i class="bi bi-person-badge fs-6"></i>
+                </div>
+                <div>
+                    <div class="kpi-label-sm" style="color: #312E81;">Active Designations</div>
+                    <div class="kpi-number-sm" style="color: #1E1B4B;">18 Job Titles</div>
+                </div>
+            </div>
+            <span class="badge rounded-pill px-2.5 py-1 fs-8 fw-bold" style="background: #ffffff; color: #4338CA; border: 1px solid #C7D2FE;">
+                Configured
+            </span>
+        </div>
+    </div>
+
+    <!-- Card 2: Emerald Theme -->
+    <div class="col-12 col-sm-6 col-xl-4">
+        <div class="kpi-stat-card-v3 theme-emerald">
+            <div class="d-flex align-items-center gap-2.5">
+                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: #ffffff; color: #047857; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+                    <i class="bi bi-award fs-6"></i>
+                </div>
+                <div>
+                    <div class="kpi-label-sm" style="color: #065F46;">Seniority Ranks</div>
+                    <div class="kpi-number-sm" style="color: #064E3B;">5 Level Bands</div>
+                </div>
+            </div>
+            <span class="badge rounded-pill px-2.5 py-1 fs-8 fw-bold" style="background: #ffffff; color: #047857; border: 1px solid #A7F3D0;">
+                Rank Matrix
+            </span>
+        </div>
+    </div>
+
+    <!-- Card 3: Amber Theme -->
+    <div class="col-12 col-sm-6 col-xl-4">
+        <div class="kpi-stat-card-v3 theme-amber">
+            <div class="d-flex align-items-center gap-2.5">
+                <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: #ffffff; color: #D97706; box-shadow: 0 2px 6px rgba(0,0,0,0.05);">
+                    <i class="bi bi-people fs-6"></i>
+                </div>
+                <div>
+                    <div class="kpi-label-sm" style="color: #92400E;">Assigned Staff</div>
+                    <div class="kpi-number-sm" style="color: #78350F;">48 Employees</div>
+                </div>
+            </div>
+            <span class="badge rounded-pill px-2.5 py-1 fs-8 fw-bold" style="background: #ffffff; color: #B45309; border: 1px solid #FDE68A;">
+                Assigned
+            </span>
+        </div>
+    </div>
+</div>
+
+<!-- Organized Designations Table Card -->
+<div class="directory-card">
+    <div class="p-3 border-bottom d-flex justify-content-between align-items-center bg-light bg-opacity-50">
+        <div class="fs-8 text-muted fw-bold">
+            Corporate Designations Master Roster
+        </div>
+        <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-1.5 rounded-pill fs-8 fw-bold">
+            Designation Matrix Active
+        </span>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-directory align-middle mb-0 fs-7">
+            <thead>
+                <tr>
+                    <th style="width: 40px;" class="ps-3"><input type="checkbox" class="form-check-input" id="selectAll"></th>
+                    <th>DESIGNATION / JOB TITLE</th>
+                    <th>LINKED DEPARTMENT</th>
+                    <th>SENIORITY RANK LEVEL</th>
+                    <th>ASSIGNED MEMBERS</th>
+                    <th>STATUS</th>
+                    <th class="text-end pe-3" style="width: 110px;">ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="desig-row-1">
+                    <td class="ps-3"><input type="checkbox" class="form-check-input row-checkbox"></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2.5">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: #EFF6FF; color: #2563EB;">
+                                <i class="bi bi-person-badge-fill fs-6"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold text-dark fs-7" id="desig-title-1">Senior Full Stack Engineer</div>
+                                <div class="fs-8 text-muted">Technical Specialist Band L4</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="badge bg-light text-dark border px-2.5 py-1 fs-8">Engineering</span></td>
+                    <td><span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2.5 py-1 rounded-pill fs-8">Senior Level (L4)</span></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2" 
+                             onclick="Swal.fire({title: 'Senior Full Stack Engineers', html: '<div class=\'text-start fs-7\'><div class=\'p-2 bg-light rounded mb-2 d-flex align-items-center gap-2\'><img src=\'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80\' class=\'rounded-circle\' style=\'width:32px;height:32px;\'><div><b>Alex Rivera</b><br><span class=\'text-muted fs-8\'>Emp ID: EMP-104</span></div></div><div class=\'p-2 bg-light rounded d-flex align-items-center gap-2\'><img src=\'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80\' class=\'rounded-circle\' style=\'width:32px;height:32px;\'><div><b>Elena Rostova</b><br><span class=\'text-muted fs-8\'>Emp ID: EMP-108</span></div></div></div>', confirmButtonColor: '#2563EB'})">
+                            <div class="avatar-stack-group">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&q=80" class="avatar-stack-item">
+                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&q=80" class="avatar-stack-item">
+                            </div>
+                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2 py-0.5 rounded-pill fs-8 fw-bold">
+                                8 Staff <i class="bi bi-eye-fill ms-0.5"></i>
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="status-badge-dot active"><span class="status-dot-pulse"></span> Active</span>
+                    </td>
+                    <td class="text-end pe-3">
+                        <div class="d-flex justify-content-end align-items-center gap-1">
+                            <button class="btn btn-light btn-sm text-primary rounded-circle p-1.5" style="width: 32px; height: 32px;" data-bs-toggle="modal" data-bs-target="#editDesignationModal-1" title="Edit Designation">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                            <button class="btn btn-light btn-sm text-danger rounded-circle p-1.5" style="width: 32px; height: 32px;" title="Delete Designation" onclick="if(confirm('Delete Senior Full Stack Engineer designation?')){ document.getElementById('desig-row-1').remove(); Swal.fire({icon:'success', title:'Deleted!', text:'Designation removed successfully.', timer:1500, showConfirmButton:false}); }">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr id="desig-row-2">
+                    <td class="ps-3"><input type="checkbox" class="form-check-input row-checkbox"></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2.5">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: #F3E8FF; color: #7E22CE;">
+                                <i class="bi bi-person-badge-fill fs-6"></i>
+                            </div>
+                            <div>
+                                <div class="fw-bold text-dark fs-7" id="desig-title-2">Senior Product UX Designer</div>
+                                <div class="fs-8 text-muted">Creative Specialist Band L4</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td><span class="badge bg-light text-dark border px-2.5 py-1 fs-8">Design & UX</span></td>
+                    <td><span class="badge bg-purple bg-opacity-10 text-purple border border-purple-subtle px-2.5 py-1 rounded-pill fs-8" style="background: #F3E8FF; color: #7E22CE;">Senior Level (L4)</span></td>
+                    <td>
+                        <div class="d-flex align-items-center gap-2" 
+                             onclick="Swal.fire({title: 'Senior Product UX Designers', html: '<div class=\'text-start fs-7\'><div class=\'p-2 bg-light rounded mb-2 d-flex align-items-center gap-2\'><img src=\'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80\' class=\'rounded-circle\' style=\'width:32px;height:32px;\'><div><b>Chloe Vance</b><br><span class=\'text-muted fs-8\'>Emp ID: EMP-112</span></div></div></div>', confirmButtonColor: '#2563EB'})">
+                            <div class="avatar-stack-group">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80" class="avatar-stack-item">
+                            </div>
+                            <span class="badge bg-purple bg-opacity-10 text-purple border border-purple-subtle px-2 py-0.5 rounded-pill fs-8 fw-bold" style="background: #F3E8FF; color: #7E22CE;">
+                                4 Staff <i class="bi bi-eye-fill ms-0.5"></i>
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        <span class="status-badge-dot active"><span class="status-dot-pulse"></span> Active</span>
+                    </td>
+                    <td class="text-end pe-3">
+                        <div class="d-flex justify-content-end align-items-center gap-1">
+                            <button class="btn btn-light btn-sm text-primary rounded-circle p-1.5" style="width: 32px; height: 32px;" data-bs-toggle="modal" data-bs-target="#editDesignationModal-2" title="Edit Designation">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                            <button class="btn btn-light btn-sm text-danger rounded-circle p-1.5" style="width: 32px; height: 32px;" title="Delete Designation" onclick="if(confirm('Delete Senior Product UX Designer designation?')){ document.getElementById('desig-row-2').remove(); Swal.fire({icon:'success', title:'Deleted!', text:'Designation removed successfully.', timer:1500, showConfirmButton:false}); }">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal: Create Designation -->
+<div class="modal fade" id="createDesignationModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <form onsubmit="event.preventDefault(); $('#createDesignationModal').modal('hide'); Swal.fire({icon:'success', title:'Designation Created!', text:'New designation added to matrix.', confirmButtonColor: '#2563EB', customClass: {popup:'rounded-4 border-0 shadow-lg'}})">
+                <div class="modal-header border-bottom">
+                    <h5 class="modal-title fw-extrabold text-dark fs-6">Add New Designation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body fs-7">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Designation Title *</label>
+                        <input type="text" class="form-control rounded-3" required placeholder="e.g. Senior DevOps Specialist">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Department *</label>
+                        <select class="form-select rounded-3">
+                            @foreach($departments as $d)
+                                <option value="{{ $d->id }}">{{ $d->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Seniority Rank Band</label>
+                        <select class="form-select rounded-3">
+                            <option>Junior Level (L1)</option>
+                            <option>Mid Level (L2-L3)</option>
+                            <option selected>Senior Level (L4)</option>
+                            <option>Lead / Principal (L5)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-top">
+                    <button type="button" class="btn btn-light rounded-pill btn-sm px-3" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary rounded-pill btn-sm px-4">Save Designation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Edit Designation 1 -->
+<div class="modal fade" id="editDesignationModal-1" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <form onsubmit="event.preventDefault(); $('#editDesignationModal-1').modal('hide'); Swal.fire({icon:'success', title:'Designation Updated!', text:'Senior Full Stack Engineer title updated.', confirmButtonColor: '#2563EB', customClass: {popup:'rounded-4 border-0 shadow-lg'}})">
+                <div class="modal-header border-bottom">
+                    <h5 class="modal-title fw-extrabold text-dark fs-6">Edit Designation: Senior Full Stack Engineer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body fs-7">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Designation Title *</label>
+                        <input type="text" class="form-control rounded-3" value="Senior Full Stack Engineer" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Department *</label>
+                        <select class="form-select rounded-3">
+                            @foreach($departments as $d)
+                                <option value="{{ $d->id }}" {{ $d->name == 'Engineering' ? 'selected' : '' }}>{{ $d->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Seniority Rank Band</label>
+                        <select class="form-select rounded-3">
+                            <option selected>Senior Level (L4)</option>
+                            <option>Lead / Principal (L5)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-top">
+                    <button type="button" class="btn btn-light rounded-pill btn-sm px-3" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary rounded-pill btn-sm px-4">Update Designation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Edit Designation 2 -->
+<div class="modal fade" id="editDesignationModal-2" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <form onsubmit="event.preventDefault(); $('#editDesignationModal-2').modal('hide'); Swal.fire({icon:'success', title:'Designation Updated!', text:'Senior Product UX Designer updated.', confirmButtonColor: '#2563EB', customClass: {popup:'rounded-4 border-0 shadow-lg'}})">
+                <div class="modal-header border-bottom">
+                    <h5 class="modal-title fw-extrabold text-dark fs-6">Edit Designation: Senior Product UX Designer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body fs-7">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Designation Title *</label>
+                        <input type="text" class="form-control rounded-3" value="Senior Product UX Designer" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Department *</label>
+                        <select class="form-select rounded-3">
+                            @foreach($departments as $d)
+                                <option value="{{ $d->id }}">{{ $d->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Seniority Rank Band</label>
+                        <select class="form-select rounded-3">
+                            <option selected>Senior Level (L4)</option>
+                            <option>Lead / Principal (L5)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-top">
+                    <button type="button" class="btn btn-light rounded-pill btn-sm px-3" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary rounded-pill btn-sm px-4">Update Designation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endsection
