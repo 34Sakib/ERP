@@ -10,7 +10,7 @@
 
 **A modern, full-featured Enterprise Resource Planning (ERP) & Human Resource Management System (HRMS) built on Laravel 12 and Tailwind CSS.**
 
-[Features](#-key-features--modules) • [Tech Stack](#%EF%B8%8F-technology-stack) • [Quick Start](#-quick-start-guide) • [Demo Credentials](#-demo-accounts--roles) • [Directory Structure](#-directory-structure)
+[Features](#-key-features--modules) • [Tech Stack](#%EF%B8%8F-technology-stack) • [Quick Start](#-quick-start-guide) • [Directory Structure](#-directory-structure)
 
 ---
 
@@ -194,19 +194,6 @@ php artisan serve
 ```
 
 Navigate to `http://127.0.0.1:8000` in your web browser.
-
----
-
-## 🔑 Demo Accounts & Roles
-
-After running `php artisan migrate --seed`, you can log in using any of the default test credentials below:
-
-| Role | Email Address | Password | Permissions Scope |
-| :--- | :--- | :--- | :--- |
-| **System Super Admin** | `admin@erp.com` | `12345678` | Full Unrestricted Access |
-| **HR Manager** | `hr@erp.com` | `12345678` | HRIS, Leave, Attendance, Payroll & Recruitment |
-| **Engineering Manager** | `manager@erp.com` | `12345678` | Team Lead, Attendance Approvals & Projects |
-| **Employee** | `employee@erp.com` | `12345678` | Employee Self-Service (ESS), Punch Clock, My Leave |
 
 ---
 
