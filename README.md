@@ -1,4 +1,6 @@
 <div align="center">
+<img width="1920" height="2224" alt="image" src="https://github.com/user-attachments/assets/3e3184dc-3ace-4b7e-b55f-5c1f162cc715" />
+
 
 # 🏢 Enterprise Resource Planning (ERP) Platform
 
