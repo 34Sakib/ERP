@@ -1,16 +1,16 @@
 <aside id="sidebar-wrapper">
-    <div class="sidebar-brand">
-        <div class="d-flex align-items-center justify-content-center rounded-2" style="width: 30px; height: 30px; background-color: var(--primary-forest); color: #fff;">
-            <i class="bi bi-tree-fill fs-7"></i>
+    <div class="sidebar-brand d-flex align-items-center gap-2 px-3 py-2">
+        <div class="d-flex align-items-center justify-content-center rounded-3" style="width: 34px; height: 34px; background-color: #8B5CF6; color: #fff;">
+            <i class="bi bi-hexagon-fill fs-7"></i>
         </div>
-        <span style="font-weight: 800; letter-spacing: -0.02em;">ENTERPRISE ERP</span>
+        <span style="font-weight: 800; letter-spacing: -0.01em; color: #1E293B;">ENTERPRISE ERP</span>
     </div>
 
     <!-- Search in Sidebar -->
     <div class="px-3 pt-3 pb-2">
         <div class="position-relative">
             <i class="bi bi-search position-absolute top-50 start-0 translate-middle-y ms-3 fs-8 text-muted"></i>
-            <input type="text" id="sidebarSearch" class="form-control form-control-sm ps-4 text-white border-0 fs-8" placeholder="Search modules... (⌘K)" style="background-color: rgba(255,255,255,0.06) !important; color: #fff !important;">
+            <input type="text" id="sidebarSearch" class="form-control form-control-sm ps-4 border-0 fs-8" placeholder="Search modules... (⌘K)" style="background-color: #F1F5F9 !important; color: #1E293B !important; border-radius: 8px;">
         </div>
     </div>
 

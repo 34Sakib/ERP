@@ -770,7 +770,7 @@
                 },
                 background: 'transparent'
             },
-            colors: ['#FF9F9F', '#16C760', '#4F86F7', '#A855F7', '#54C5F8', '#F43F5E'],
+            colors: ['#FF8A65', '#4DB6AC', '#8B5CF6', '#64B5F6', '#5C6BC0', '#F06292'],
             dataLabels: {
                 enabled: true,
                 formatter: function(val) {

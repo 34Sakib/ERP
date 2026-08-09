@@ -38,72 +38,49 @@
         100% { transform: translateY(0px) rotate(0deg); }
     }
 
-    /* Hero Banner with Animated Fluid Mesh */
+    /* Hero Welcome Banner */
     .hero-welcome-banner {
-        background: linear-gradient(-45deg, #0B4F4A, #166560, #0B4F4A, #B5A47F, #22333B);
-        background-size: 300% 300%;
-        animation: gradientMesh 12s ease infinite, fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        border-radius: 24px;
-        padding: 2.25rem 2.5rem;
+        background: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%);
+        border-radius: 16px;
+        padding: 2rem 2.25rem;
         color: #ffffff;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 20px 45px rgba(11, 79, 74, 0.25);
-        margin-bottom: 2rem;
-        border: 1px solid rgba(181, 164, 127, 0.3);
+        box-shadow: 0 10px 30px -5px rgba(139, 92, 246, 0.3);
+        margin-bottom: 1.75rem;
+        border: none;
     }
 
     .hero-welcome-banner::before {
         content: '';
         position: absolute;
-        top: -50%;
-        right: -10%;
-        width: 380px;
-        height: 380px;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0) 70%);
+        top: -40%;
+        right: -5%;
+        width: 320px;
+        height: 320px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 70%);
         border-radius: 50%;
         pointer-events: none;
-        animation: floatOrb 8s ease-in-out infinite;
-    }
-
-    .hero-welcome-banner::after {
-        content: '';
-        position: absolute;
-        bottom: -40%;
-        right: 15%;
-        width: 250px;
-        height: 250px;
-        background: radial-gradient(circle, rgba(181, 164, 127, 0.25) 0%, rgba(181, 164, 127, 0) 70%);
-        border-radius: 50%;
-        pointer-events: none;
-        animation: floatOrb 6s ease-in-out infinite reverse;
     }
 
     .hero-avatar {
-        width: 64px;
-        height: 64px;
-        border-radius: 18px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
         object-fit: cover;
-        border: 3px solid rgba(255, 255, 255, 0.35);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-        transition: transform 0.3s ease;
-    }
-
-    .hero-avatar:hover {
-        transform: scale(1.08) rotate(-3deg);
+        border: 3px solid rgba(255, 255, 255, 0.4);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
     }
 
     .hero-quick-btn {
-        background: rgba(255, 255, 255, 0.18);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
+        background: rgba(255, 255, 255, 0.2);
         color: #ffffff;
         border: 1px solid rgba(255, 255, 255, 0.3);
-        padding: 0.65rem 1.2rem;
-        border-radius: 14px;
+        padding: 0.55rem 1.1rem;
+        border-radius: 10px;
         font-weight: 700;
         font-size: 0.85rem;
-        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.2s ease;
         text-decoration: none;
         display: inline-flex;
         align-items: center;
@@ -112,87 +89,68 @@
 
     .hero-quick-btn:hover {
         background: #ffffff;
-        color: #0B4F4A;
-        transform: translateY(-3px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+        color: #8B5CF6;
+        transform: translateY(-2px);
     }
 
-    /* Staggered KPI Cards - Gradient Example Design */
+    /* Soft Diagonal Gradient Stat Cards (Only Summary Stat Cards get gradients) */
     .stat-card-gradient {
-        border-radius: 20px;
-        padding: 1.2rem 1.35rem;
+        border-radius: 14px;
+        padding: 1.25rem 1.35rem;
         position: relative;
         overflow: hidden;
-        color: #ffffff;
-        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        color: #ffffff !important;
+        transition: all 0.25s ease;
         border: none;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        min-height: 125px;
+        min-height: 130px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
     }
 
-    /* Fine wave line texture overlay */
-    .stat-card-gradient::before {
+    /* Subtle large circular decorative shape in background (12% opacity white) */
+    .stat-card-gradient::after {
         content: '';
         position: absolute;
-        inset: 0;
-        background-image: repeating-linear-gradient(
-            45deg,
-            rgba(255, 255, 255, 0.07) 0,
-            rgba(255, 255, 255, 0.07) 1px,
-            transparent 1px,
-            transparent 9px
-        );
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.12);
+        right: -25px;
+        bottom: -25px;
         pointer-events: none;
-        opacity: 0.8;
     }
 
     .stat-card-gradient:hover {
-        transform: translateY(-6px) scale(1.02);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     }
 
-    /* Card 1: Vibrant Magenta Pink to Purple */
+    /* Card 1: Coral to Pink (#FF8A65 to #F06292) */
     .stat-card-pink {
-        background: linear-gradient(135deg, #EC4899 0%, #D946EF 50%, #A855F7 100%);
-        box-shadow: 0 12px 28px -4px rgba(236, 72, 153, 0.38);
-    }
-    .stat-card-pink:hover {
-        box-shadow: 0 18px 36px -4px rgba(236, 72, 153, 0.48);
+        background: linear-gradient(135deg, #FF8A65 0%, #F06292 100%);
     }
 
-    /* Card 2: Violet Indigo */
+    /* Card 2: Blue to Indigo (#64B5F6 to #5C6BC0) */
     .stat-card-purple {
-        background: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%);
-        box-shadow: 0 12px 28px -4px rgba(139, 92, 246, 0.38);
-    }
-    .stat-card-purple:hover {
-        box-shadow: 0 18px 36px -4px rgba(139, 92, 246, 0.48);
+        background: linear-gradient(135deg, #64B5F6 0%, #5C6BC0 100%);
     }
 
-    /* Card 3: Sky Blue / Cyan */
+    /* Card 3: Teal to Mint (#4DB6AC to #80CBC4) */
     .stat-card-cyan {
-        background: linear-gradient(135deg, #38BDF8 0%, #3B82F6 100%);
-        box-shadow: 0 12px 28px -4px rgba(56, 189, 248, 0.38);
-    }
-    .stat-card-cyan:hover {
-        box-shadow: 0 18px 36px -4px rgba(56, 189, 248, 0.48);
+        background: linear-gradient(135deg, #4DB6AC 0%, #80CBC4 100%);
     }
 
-    /* Card 4: Emerald / Mint Green */
+    /* Card 4: Coral to Pink (cycled) */
     .stat-card-emerald {
-        background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-        box-shadow: 0 12px 28px -4px rgba(16, 185, 129, 0.38);
-    }
-    .stat-card-emerald:hover {
-        box-shadow: 0 18px 36px -4px rgba(16, 185, 129, 0.48);
+        background: linear-gradient(135deg, #FF8A65 0%, #F06292 100%);
     }
 
     .stat-card-title {
-        font-size: 0.88rem;
+        font-size: 0.85rem;
         font-weight: 600;
-        color: rgba(255, 255, 255, 0.92);
-        letter-spacing: 0.01em;
+        color: rgba(255, 255, 255, 0.95) !important;
         position: relative;
         z-index: 1;
     }
@@ -200,31 +158,34 @@
     .stat-card-value {
         font-size: 2.1rem;
         font-weight: 800;
-        color: #ffffff;
-        line-height: 1;
+        color: #ffffff !important;
+        line-height: 1.1;
         letter-spacing: -0.02em;
         position: relative;
         z-index: 1;
     }
 
-    .stat-card-icon {
-        font-size: 2.2rem;
-        color: rgba(255, 255, 255, 0.92);
-        line-height: 1;
+    /* Top-right translucent white circle chip for icons */
+    .stat-card-icon-chip {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.22);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.15rem;
+        color: #ffffff;
         position: relative;
         z-index: 1;
-        transition: transform 0.3s ease;
-    }
-
-    .stat-card-gradient:hover .stat-card-icon {
-        transform: scale(1.15) rotate(6deg);
+        flex-shrink: 0;
     }
 
     .stat-card-subtext {
         font-size: 0.78rem;
         font-weight: 600;
-        color: rgba(255, 255, 255, 0.85);
-        margin-top: 0.45rem;
+        color: rgba(255, 255, 255, 0.9) !important;
+        margin-top: 0.4rem;
         position: relative;
         z-index: 1;
         display: flex;
@@ -249,8 +210,8 @@
     }
 
     .trend-up {
-        background: #E6F2F1;
-        color: #0B4F4A;
+        background: #F3E8FF;
+        color: #8B5CF6;
     }
 
     .trend-alert {
@@ -259,14 +220,14 @@
     }
 
     .trend-neutral {
-        background: #F5F1E8;
-        color: #6B7B83;
+        background: #F8FAFC;
+        color: #64748B;
     }
 
     .kpi-progress-bar {
         height: 6px;
         border-radius: 999px;
-        background: #F5F1E8;
+        background: #F8FAFC;
         overflow: hidden;
         margin-top: 0.85rem;
     }
@@ -280,17 +241,16 @@
     /* Main Section Dashboard Cards */
     .dash-card {
         background: #ffffff;
-        border-radius: 22px;
-        border: 1px solid #E6E0D4;
-        box-shadow: var(--dash-card-shadow);
-        padding: 1.65rem;
+        border-radius: 14px;
+        border: 1px solid #E2E8F0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+        padding: 1.5rem;
         margin-bottom: 1.5rem;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
     .dash-card:hover {
-        box-shadow: 0 18px 40px rgba(11, 79, 74, 0.08);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
     }
 
     .dash-card-header {
@@ -301,9 +261,9 @@
     }
 
     .dash-card-title {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         font-weight: 800;
-        color: #22333B;
+        color: #1E293B;
         margin: 0;
         letter-spacing: -0.01em;
         display: flex;
@@ -313,7 +273,7 @@
 
     .dash-card-subtitle {
         font-size: 0.82rem;
-        color: #6B7B83;
+        color: #64748B;
         margin-top: 0.15rem;
     }
 
@@ -350,7 +310,7 @@
     .donut-center-badge .total-num {
         font-size: 2.1rem;
         font-weight: 800;
-        color: #22333B;
+        color: #1E293B;
         line-height: 1;
     }
 
@@ -358,7 +318,7 @@
         font-size: 0.68rem;
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        color: #6B7B83;
+        color: #64748B;
         font-weight: 700;
         margin-top: 0.25rem;
     }
@@ -366,7 +326,7 @@
     /* Department Custom Table Items */
     .dept-progress-item {
         padding: 0.65rem 0.5rem;
-        border-bottom: 1px solid #F5F1E8;
+        border-bottom: 1px solid #F1F5F9;
         transition: all 0.25s ease;
     }
 
@@ -375,32 +335,32 @@
     }
 
     .dept-progress-item:hover {
-        background: #F9F7F2;
-        border-radius: 12px;
+        background: #F8FAFC;
+        border-radius: 10px;
         transform: translateX(4px);
     }
 
     /* Today's Presence Compact Card */
     .presence-compact-card {
         background: #ffffff;
-        border: 1px solid #E6E0D4;
-        border-radius: 18px;
+        border: 1px solid #E2E8F0;
+        border-radius: 14px;
         padding: 0.95rem 1.25rem;
-        box-shadow: var(--dash-card-shadow);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         transition: all 0.3s ease;
     }
 
     .presence-compact-card:hover {
-        box-shadow: 0 12px 28px rgba(11, 79, 74, 0.08);
-        border-color: rgba(11, 79, 74, 0.3);
+        box-shadow: 0 8px 24px rgba(139, 92, 246, 0.1);
+        border-color: rgba(139, 92, 246, 0.3);
     }
 
     .presence-icon-box {
         width: 42px;
         height: 42px;
         border-radius: 12px;
-        background: #E6F2F1;
-        color: #0B4F4A;
+        background: #F3E8FF;
+        color: #8B5CF6;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -410,16 +370,15 @@
 
     /* Shift Terminal Widget - Compact & Refined */
     .terminal-card {
-        background: linear-gradient(145deg, #0B4F4A 0%, #063431 100%);
-        border-radius: 18px;
+        background: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%);
+        border-radius: 14px;
         padding: 1.2rem 1.35rem;
         color: #ffffff;
-        box-shadow: 0 12px 28px rgba(11, 79, 74, 0.25);
+        box-shadow: 0 10px 25px rgba(139, 92, 246, 0.25);
         margin-bottom: 1.25rem;
         position: relative;
         overflow: hidden;
-        animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-        border: 1px solid rgba(181, 164, 127, 0.3);
+        border: none;
     }
 
     .terminal-clock-display {
@@ -427,15 +386,15 @@
         font-weight: 800;
         font-family: monospace, monospace;
         letter-spacing: 0.05em;
-        color: #C9A227;
-        text-shadow: 0 0 14px rgba(201, 162, 39, 0.4);
+        color: #ffffff;
+        text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
     }
 
     .terminal-btn-punch {
-        background: linear-gradient(135deg, #C9A227 0%, #B5A47F 100%);
-        color: #0B4F4A;
+        background: #ffffff;
+        color: #8B5CF6;
         border: none;
-        border-radius: 12px;
+        border-radius: 10px;
         padding: 0.65rem 1.25rem;
         font-weight: 800;
         font-size: 0.88rem;
@@ -444,32 +403,32 @@
         align-items: center;
         justify-content: center;
         gap: 0.5rem;
-        box-shadow: 0 6px 20px rgba(201, 162, 39, 0.3);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
         transition: all 0.25s ease;
     }
 
     .terminal-btn-punch:hover {
         transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(201, 162, 39, 0.45);
-        color: #063431;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+        color: #7C3AED;
     }
 
     .terminal-btn-punch.checked-in {
-        background: linear-gradient(135deg, #E07A5F 0%, #C04E36 100%);
+        background: linear-gradient(135deg, #FF8A65 0%, #F06292 100%);
         color: #ffffff;
-        box-shadow: 0 6px 20px rgba(224, 122, 95, 0.35);
+        box-shadow: 0 6px 20px rgba(240, 98, 146, 0.35);
     }
 
-    /* Module Shortcut Grid - Micro Modern Cards */
+    /* Module Shortcut Grid */
     .shortcut-card {
-        background: #F9F7F2;
-        border: 1px solid #E6E0D4;
-        border-radius: 14px;
+        background: #F8FAFC;
+        border: 1px solid #E2E8F0;
+        border-radius: 12px;
         padding: 0.85rem 0.5rem;
         text-align: center;
         text-decoration: none;
-        color: #22333B;
-        transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        color: #1E293B;
+        transition: all 0.25s ease;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -478,50 +437,50 @@
 
     .shortcut-card:hover {
         background: #ffffff;
-        border-color: #0B4F4A;
+        border-color: #8B5CF6;
         transform: translateY(-3px);
-        box-shadow: 0 10px 22px rgba(11, 79, 74, 0.12);
-        color: #0B4F4A;
+        box-shadow: 0 8px 20px rgba(139, 92, 246, 0.12);
+        color: #8B5CF6;
     }
 
     .shortcut-icon {
         width: 38px;
         height: 38px;
-        border-radius: 11px;
-        background: #E6F2F1;
-        color: #0B4F4A;
+        border-radius: 10px;
+        background: #F3E8FF;
+        color: #8B5CF6;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 1.15rem;
-        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transition: all 0.25s ease;
     }
 
     .shortcut-card:hover .shortcut-icon {
-        background: #0B4F4A;
+        background: #8B5CF6;
         color: #ffffff;
-        transform: scale(1.12) rotate(6deg);
+        transform: scale(1.1);
     }
 
     .pulsing-dot {
         width: 8px;
         height: 8px;
-        background-color: #0B4F4A;
+        background-color: #8B5CF6;
         border-radius: 50%;
         display: inline-block;
-        box-shadow: 0 0 0 0 rgba(11, 79, 74, 0.7);
+        box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7);
         animation: pulsePing 2s infinite !important;
     }
 
     /* Clean Organized Company Announcements Feed */
     .announcement-item-card {
-        background: #F9F7F2;
-        border: 1px solid #E6E0D4;
-        border-left: 3px solid #0B4F4A;
-        border-radius: 14px;
+        background: #F8FAFC;
+        border: 1px solid #E2E8F0;
+        border-left: 3.5px solid #8B5CF6;
+        border-radius: 12px;
         padding: 0.85rem 1rem;
         margin-bottom: 0.65rem;
-        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.25s ease;
         cursor: pointer;
     }
 
@@ -531,10 +490,10 @@
 
     .announcement-item-card:hover {
         background: #ffffff;
-        border-color: #0B4F4A;
+        border-color: #8B5CF6;
         border-left-width: 4px;
         transform: translateX(4px);
-        box-shadow: 0 8px 20px rgba(11, 79, 74, 0.08);
+        box-shadow: 0 6px 18px rgba(139, 92, 246, 0.08);
     }
 
     .announcement-cat-badge {
@@ -542,8 +501,8 @@
         font-weight: 700;
         padding: 0.2rem 0.6rem;
         border-radius: 999px;
-        background: #E6F2F1;
-        color: #0B4F4A;
+        background: #F3E8FF;
+        color: #8B5CF6;
         display: inline-flex;
         align-items: center;
     }
@@ -551,14 +510,14 @@
     .announcement-item-title {
         font-size: 0.85rem;
         font-weight: 700;
-        color: #22333B;
+        color: #1E293B;
         margin: 0.35rem 0 0.25rem 0;
         line-height: 1.35;
     }
 
     .announcement-item-body {
         font-size: 0.78rem;
-        color: #6B7B83;
+        color: #64748B;
         margin: 0;
         line-height: 1.4;
         display: -webkit-box;
@@ -572,19 +531,19 @@
         font-weight: 700;
         padding: 0.25rem 0.75rem;
         border-radius: 999px;
-        border: 1px solid #E6E0D4;
-        background: #F9F7F2;
-        color: #6B7B83;
+        border: 1px solid #E2E8F0;
+        background: #F8FAFC;
+        color: #64748B;
         transition: all 0.2s ease;
         cursor: pointer;
     }
 
     .announcement-filter-pill.active,
     .announcement-filter-pill:hover {
-        background: #0B4F4A;
+        background: #8B5CF6;
         color: #ffffff;
-        border-color: #0B4F4A;
-        box-shadow: 0 4px 10px rgba(11, 79, 74, 0.2);
+        border-color: #8B5CF6;
+        box-shadow: 0 4px 10px rgba(139, 92, 246, 0.25);
     }
 </style>
 @endpush
@@ -631,67 +590,67 @@
 
 <!-- KPI Cards Grid (4 Cards Row matching Target Example Design) -->
 <div class="row g-3 mb-4">
-    <!-- 1. Total Employees -->
+    <!-- 1. Total Employees (Coral to Pink) -->
     <div class="col-12 col-sm-6 col-lg-3">
         <div class="stat-card-gradient stat-card-pink">
-            <div class="stat-card-title">Total Employees</div>
-            <div class="d-flex align-items-center justify-content-between my-1">
-                <div class="stat-card-value">{{ $stats['total_employees'] }}</div>
-                <div class="stat-card-icon">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="stat-card-title">Total Employees</div>
+                <div class="stat-card-icon-chip">
                     <i class="bi bi-people-fill"></i>
                 </div>
             </div>
+            <div class="stat-card-value mt-2">{{ $stats['total_employees'] }}</div>
             <div class="stat-card-subtext">
                 <i class="bi bi-person-badge-fill me-1"></i> Registered Staff
             </div>
         </div>
     </div>
 
-    <!-- 2. Active Headcount -->
+    <!-- 2. Active Headcount (Blue to Indigo) -->
     <div class="col-12 col-sm-6 col-lg-3">
         @php
             $activeRatio = $stats['total_employees'] > 0 ? round(($stats['active_employees'] / $stats['total_employees']) * 100) : 100;
         @endphp
         <div class="stat-card-gradient stat-card-purple">
-            <div class="stat-card-title">Active Headcount</div>
-            <div class="d-flex align-items-center justify-content-between my-1">
-                <div class="stat-card-value">{{ $stats['active_employees'] }}</div>
-                <div class="stat-card-icon">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="stat-card-title">Active Headcount</div>
+                <div class="stat-card-icon-chip">
                     <i class="bi bi-person-check-fill"></i>
                 </div>
             </div>
+            <div class="stat-card-value mt-2">{{ $stats['active_employees'] }}</div>
             <div class="stat-card-subtext">
                 <i class="bi bi-arrow-up-right-short fs-6"></i> {{ $activeRatio }}% Active Rate
             </div>
         </div>
     </div>
 
-    <!-- 3. On Probation -->
+    <!-- 3. On Probation (Teal to Mint) -->
     <div class="col-12 col-sm-6 col-lg-3">
         <div class="stat-card-gradient stat-card-cyan">
-            <div class="stat-card-title">On Probation</div>
-            <div class="d-flex align-items-center justify-content-between my-1">
-                <div class="stat-card-value">{{ $stats['probation_employees'] }}</div>
-                <div class="stat-card-icon">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="stat-card-title">On Probation</div>
+                <div class="stat-card-icon-chip">
                     <i class="bi bi-clock-history"></i>
                 </div>
             </div>
+            <div class="stat-card-value mt-2">{{ $stats['probation_employees'] }}</div>
             <div class="stat-card-subtext">
                 <i class="bi bi-exclamation-circle-fill me-1"></i> Review Due
             </div>
         </div>
     </div>
 
-    <!-- 4. Departments -->
+    <!-- 4. Departments (Cycled Coral to Pink) -->
     <div class="col-12 col-sm-6 col-lg-3">
         <div class="stat-card-gradient stat-card-emerald">
-            <div class="stat-card-title">Departments</div>
-            <div class="d-flex align-items-center justify-content-between my-1">
-                <div class="stat-card-value">{{ $stats['total_departments'] }}</div>
-                <div class="stat-card-icon">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="stat-card-title">Departments</div>
+                <div class="stat-card-icon-chip">
                     <i class="bi bi-diagram-3-fill"></i>
                 </div>
             </div>
+            <div class="stat-card-value mt-2">{{ $stats['total_departments'] }}</div>
             <div class="stat-card-subtext">
                 <i class="bi bi-building-fill me-1"></i> {{ $stats['total_branches'] }} {{ Str::plural('Branch', $stats['total_branches']) }}
             </div>
@@ -709,11 +668,11 @@
             <div class="dash-card-header">
                 <div>
                     <h5 class="dash-card-title">
-                        <i class="bi bi-pie-chart-fill" style="color: #0B4F4A;"></i> Department Headcount Breakdown
+                        <i class="bi bi-pie-chart-fill" style="color: #8B5CF6;"></i> Department Headcount Breakdown
                     </h5>
                     <div class="dash-card-subtitle">Real-time organization distribution across departments</div>
                 </div>
-                <span class="badge rounded-pill px-3 py-1.5 fs-8 fw-bold" style="background: #E6F2F1; color: #0B4F4A;">
+                <span class="badge rounded-pill px-3 py-1.5 fs-8 fw-bold" style="background: #F3E8FF; color: #8B5CF6;">
                     <span class="pulsing-dot me-1"></span> Live Sync
                 </span>
             </div>
@@ -735,7 +694,7 @@
                     <div class="custom-scroll pe-1">
                         @php
                             $totalDeptCount = array_sum($deptChartData) ?: 1;
-                            $palette = ['#0B4F4A', '#E07A5F', '#C9A227', '#B5A47F', '#22333B'];
+                            $palette = ['#8B5CF6', '#4DB6AC', '#FF8A65', '#64B5F6', '#5C6BC0'];
                         @endphp
 
                         @foreach($deptChartLabels as $idx => $label)
@@ -754,7 +713,7 @@
                                         {{ $cnt }} <span class="text-muted fs-8 font-normal">({{ $pct }}%)</span>
                                     </div>
                                 </div>
-                                <div class="progress" style="height: 6px; border-radius: 999px; background: #F5F1E8;">
+                                <div class="progress" style="height: 6px; border-radius: 999px; background: #F1F5F9;">
                                     <div class="progress-bar" role="progressbar" style="width: {{ $pct }}%; background: {{ $col }}; border-radius: 999px;"></div>
                                 </div>
                             </div>
@@ -765,7 +724,7 @@
 
             <div class="pt-3 mt-3 border-top d-flex justify-content-between align-items-center fs-7">
                 <span class="text-muted fs-8">Showing {{ count($deptChartLabels) }} active departments</span>
-                <a href="{{ route('departments.index') }}" class="text-decoration-none fw-bold" style="color: #0B4F4A;">
+                <a href="{{ route('departments.index') }}" class="text-decoration-none fw-bold" style="color: #8B5CF6;">
                     View all Departments <i class="bi bi-chevron-right ms-0.5"></i>
                 </a>
             </div>
@@ -776,13 +735,13 @@
             <div class="dash-card-header">
                 <div>
                     <h5 class="dash-card-title">
-                        <i class="bi bi-graph-up-arrow" style="color: #0B4F4A;"></i> Workforce Attendance & Trend
+                        <i class="bi bi-graph-up-arrow" style="color: #8B5CF6;"></i> Workforce Attendance & Trend
                     </h5>
                     <div class="dash-card-subtitle">Daily clock-in rate vs target presence for the current week</div>
                 </div>
                 <div class="btn-group btn-group-sm" role="group">
-                    <button type="button" class="btn btn-sm active fs-8 py-1 px-3 fw-bold" style="background: #0B4F4A; color: #ffffff; border-color: #0B4F4A;">This Week</button>
-                    <button type="button" class="btn btn-sm fs-8 py-1 px-3 fw-bold" style="background: #F9F7F2; color: #6B7B83; border: 1px solid #E6E0D4;">This Month</button>
+                    <button type="button" id="btnTrendWeek" class="btn btn-sm active fs-8 py-1 px-3 fw-bold" onclick="switchTrendPeriod('week')" style="background: #8B5CF6; color: #ffffff; border-color: #8B5CF6;">This Week</button>
+                    <button type="button" id="btnTrendMonth" class="btn btn-sm fs-8 py-1 px-3 fw-bold" onclick="switchTrendPeriod('month')" style="background: #F8FAFC; color: #64748B; border: 1px solid #E2E8F0;">This Month</button>
                 </div>
             </div>
 
@@ -826,7 +785,7 @@
             <div class="dash-card-header mb-2.5">
                 <div>
                     <h5 class="dash-card-title fs-6">
-                        <i class="bi bi-grid-fill" style="color: #0B4F4A;"></i> ERP Quick Modules
+                        <i class="bi bi-grid-fill" style="color: #8B5CF6;"></i> ERP Quick Modules
                     </h5>
                 </div>
                 <span class="fs-8 text-muted fw-semibold">6 Shortcuts</span>
@@ -877,11 +836,11 @@
             <div class="dash-card-header mb-2.5">
                 <div>
                     <h5 class="dash-card-title fs-6">
-                        <i class="bi bi-megaphone-fill" style="color: #0B4F4A;"></i> Company Announcements
+                        <i class="bi bi-megaphone-fill" style="color: #8B5CF6;"></i> Company Announcements
                     </h5>
                     <div class="dash-card-subtitle">Official organization updates & notices</div>
                 </div>
-                <a href="{{ Route::has('noticeboard.index') ? route('noticeboard.index') : '#' }}" class="text-decoration-none fw-bold fs-8 text-nowrap d-inline-flex align-items-center gap-1 flex-shrink-0" style="color: #0B4F4A;">
+                <a href="{{ Route::has('noticeboard.index') ? route('noticeboard.index') : '#' }}" class="text-decoration-none fw-bold fs-8 text-nowrap d-inline-flex align-items-center gap-1 flex-shrink-0" style="color: #8B5CF6;">
                     View All <i class="bi bi-arrow-right"></i>
                 </a>
             </div>
@@ -967,7 +926,7 @@
             `,
             showCloseButton: true,
             confirmButtonText: '<i class="bi bi-check2-circle me-1"></i> Got It',
-            confirmButtonColor: '#0B4F4A',
+            confirmButtonColor: '#8B5CF6',
             customClass: {
                 popup: 'rounded-4 border-0 shadow-lg p-4',
                 confirmButton: 'px-4 py-2 rounded-pill fw-bold fs-7'
@@ -1017,9 +976,8 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'Checked In Successfully!',
-                    text: data.message,
-                    confirmButtonColor: '#0B4F4A',
-                    customClass: { popup: 'rounded-4 border-0 shadow-lg' }
+                    text: data.message || 'Shift clock-in recorded.',
+                    confirmButtonText: 'Got It'
                 });
             } else if (data.status === 'checked_out') {
                 isCheckedIn = false;
@@ -1029,18 +987,17 @@
                 status.className = 'badge bg-secondary text-white px-2.5 py-1 rounded-pill';
 
                 Swal.fire({
-                    icon: 'info',
-                    title: 'Checked Out',
-                    text: data.message,
-                    confirmButtonColor: '#0B4F4A',
-                    customClass: { popup: 'rounded-4 border-0 shadow-lg' }
+                    icon: 'success',
+                    title: 'Checked Out Successfully!',
+                    text: data.message || 'Shift clock-out recorded.',
+                    confirmButtonText: 'Got It'
                 });
             } else {
                 Swal.fire({
                     icon: 'warning',
                     title: 'Terminal Notice',
                     text: data.error || data.message || 'Unable to update shift attendance.',
-                    confirmButtonColor: '#0B4F4A'
+                    confirmButtonText: 'Got It'
                 });
             }
         })
@@ -1050,7 +1007,7 @@
                 icon: 'error',
                 title: 'Connection Error',
                 text: 'Failed to communicate with shift terminal server.',
-                confirmButtonColor: '#E07A5F'
+                confirmButtonText: 'Close'
             });
         });
     }
@@ -1076,7 +1033,7 @@
             theme: {
                 mode: isDarkMode ? 'dark' : 'light'
             },
-            colors: ['#0B4F4A', '#E07A5F', '#C9A227', '#B5A47F', '#22333B'],
+            colors: ['#8B5CF6', '#4DB6AC', '#FF8A65', '#64B5F6', '#5C6BC0'],
             dataLabels: { enabled: false },
             legend: { show: false },
             tooltip: {
@@ -1101,15 +1058,12 @@
         var donutChart = new ApexCharts(document.querySelector("#departmentDonutChart"), donutOptions);
         donutChart.render();
 
-        // 2. Attendance & Activity Trend Chart
+        // 2. Dynamic Attendance & Activity Trend Chart
+        const weeklyTrendData = @json($weeklyTrend);
+        const monthlyTrendData = @json($monthlyTrend);
+
         var trendOptions = {
-            series: [{
-                name: 'Present On-Time',
-                data: [92, 95, 88, 96, 94, 78, 85]
-            }, {
-                name: 'Late / Absence',
-                data: [8, 5, 12, 4, 6, 22, 15]
-            }],
+            series: weeklyTrendData.series,
             chart: {
                 type: 'area',
                 height: 240,
@@ -1120,7 +1074,7 @@
             theme: {
                 mode: isDarkMode ? 'dark' : 'light'
             },
-            colors: ['#0B4F4A', '#E07A5F'],
+            colors: ['#8B5CF6', '#FF8A65'],
             fill: {
                 type: 'gradient',
                 gradient: {
@@ -1133,12 +1087,12 @@
             dataLabels: { enabled: false },
             stroke: { curve: 'smooth', width: 2.5 },
             xaxis: {
-                categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                categories: weeklyTrendData.categories,
                 axisBorder: { show: false },
                 axisTicks: { show: false },
                 labels: {
                     style: {
-                        colors: isDarkMode ? '#94A3B8' : '#6B7B83'
+                        colors: isDarkMode ? '#94A3B8' : '#64748B'
                     }
                 }
             },
@@ -1147,19 +1101,19 @@
                 labels: {
                     formatter: function(val) { return val + "%"; },
                     style: {
-                        colors: isDarkMode ? '#94A3B8' : '#6B7B83'
+                        colors: isDarkMode ? '#94A3B8' : '#64748B'
                     }
                 }
             },
             grid: {
-                borderColor: isDarkMode ? '#374151' : '#E6E0D4',
+                borderColor: isDarkMode ? '#374151' : '#E2E8F0',
                 strokeDashArray: 4
             },
             legend: {
                 position: 'top',
                 horizontalAlign: 'right',
                 labels: {
-                    colors: isDarkMode ? '#F8FAFC' : '#22333B'
+                    colors: isDarkMode ? '#F8FAFC' : '#1E293B'
                 }
             },
             tooltip: {
@@ -1167,8 +1121,40 @@
             }
         };
 
-        var trendChart = new ApexCharts(document.querySelector("#attendanceTrendChart"), trendOptions);
-        trendChart.render();
+        window.trendChart = new ApexCharts(document.querySelector("#attendanceTrendChart"), trendOptions);
+        window.trendChart.render();
     });
+
+    // Dynamic Period Toggle Handler for Week vs Month
+    function switchTrendPeriod(period) {
+        const btnWeek = document.getElementById('btnTrendWeek');
+        const btnMonth = document.getElementById('btnTrendMonth');
+        const weeklyData = @json($weeklyTrend);
+        const monthlyData = @json($monthlyTrend);
+
+        if (!btnWeek || !btnMonth || !window.trendChart) return;
+
+        if (period === 'week') {
+            btnWeek.className = 'btn btn-sm active fs-8 py-1 px-3 fw-bold';
+            btnWeek.style.cssText = 'background: #8B5CF6; color: #ffffff; border-color: #8B5CF6;';
+            btnMonth.className = 'btn btn-sm fs-8 py-1 px-3 fw-bold';
+            btnMonth.style.cssText = 'background: #F8FAFC; color: #64748B; border: 1px solid #E2E8F0;';
+
+            window.trendChart.updateOptions({
+                xaxis: { categories: weeklyData.categories },
+                series: weeklyData.series
+            });
+        } else {
+            btnMonth.className = 'btn btn-sm active fs-8 py-1 px-3 fw-bold';
+            btnMonth.style.cssText = 'background: #8B5CF6; color: #ffffff; border-color: #8B5CF6;';
+            btnWeek.className = 'btn btn-sm fs-8 py-1 px-3 fw-bold';
+            btnWeek.style.cssText = 'background: #F8FAFC; color: #64748B; border: 1px solid #E2E8F0;';
+
+            window.trendChart.updateOptions({
+                xaxis: { categories: monthlyData.categories },
+                series: monthlyData.series
+            });
+        }
+    }
 </script>
 @endpush

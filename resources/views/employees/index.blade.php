@@ -3,28 +3,29 @@
 @push('styles')
 <style>
     .directory-hero {
-        background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-        border-radius: 20px;
+        background: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%);
+        border-radius: 16px;
         padding: 1.75rem 2rem;
         color: #ffffff;
         margin-bottom: 1.75rem;
-        box-shadow: 0 12px 30px rgba(79, 70, 229, 0.2);
+        box-shadow: 0 10px 30px -5px rgba(139, 92, 246, 0.3);
+        border: none;
     }
 
     .directory-card {
         background: #ffffff;
-        border-radius: 20px;
-        border: 1px solid #EFEFF7;
-        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+        border-radius: 16px;
+        border: 1px solid #E2E8F0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         overflow: hidden;
     }
 
     /* Filter Control Panel Styling */
     .filter-panel-card {
         background: #ffffff;
-        border-radius: 20px;
-        border: 1px solid #EFEFF7;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.04);
+        border-radius: 16px;
+        border: 1px solid #E2E8F0;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
         padding: 1.5rem;
         margin-bottom: 1.5rem;
     }
@@ -34,7 +35,7 @@
     }
 
     .filter-input-pill input {
-        border-radius: 12px;
+        border-radius: 10px;
         padding-left: 2.5rem;
         font-size: 0.85rem;
         border: 1px solid #E2E8F0;
@@ -44,8 +45,8 @@
 
     .filter-input-pill input:focus {
         background: #ffffff;
-        border-color: #6366F1;
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+        border-color: #8B5CF6;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
     }
 
     .filter-label-sm {
@@ -61,7 +62,7 @@
     }
 
     .filter-select-custom {
-        border-radius: 12px;
+        border-radius: 10px;
         font-size: 0.85rem;
         font-weight: 600;
         border: 1px solid #E2E8F0;
@@ -71,8 +72,8 @@
 
     .filter-select-custom:focus {
         background-color: #ffffff;
-        border-color: #6366F1;
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+        border-color: #8B5CF6;
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
     }
 
     .filter-chip-btn {
@@ -81,7 +82,7 @@
         padding: 0.4rem 0.9rem;
         border-radius: 999px;
         border: 1px solid #E2E8F0;
-        background: #ffffff;
+        background: #F8FAFC;
         color: #64748B;
         text-decoration: none;
         transition: all 0.2s ease;
@@ -91,10 +92,10 @@
     }
 
     .filter-chip-btn.active, .filter-chip-btn:hover {
-        background: #4F46E5;
+        background: #8B5CF6;
         color: #ffffff;
-        border-color: #4F46E5;
-        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+        border-color: #8B5CF6;
+        box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
     }
 
     /* Organized Canonical Directory Table */
@@ -106,12 +107,12 @@
     }
 
     .table-directory thead th {
-        background: linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%);
+        background: #F8FAFC;
         font-size: 0.72rem;
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        color: #475569;
+        color: #1E293B;
         padding: 0.95rem 1.15rem;
         border-bottom: 1.5px solid #E2E8F0;
         white-space: nowrap;
@@ -124,7 +125,7 @@
 
     .table-directory tbody tr:hover {
         background-color: #F8FAFC !important;
-        box-shadow: inset 3px 0 0 #4F46E5;
+        box-shadow: inset 3.5px 0 0 #8B5CF6;
     }
 
     .table-directory tbody td {
@@ -137,11 +138,11 @@
         font-family: monospace, monospace;
         font-weight: 700;
         font-size: 0.76rem;
-        background: #F1F5F9;
-        color: #334155;
+        background: #F3E8FF;
+        color: #8B5CF6;
         padding: 0.25rem 0.6rem;
         border-radius: 8px;
-        border: 1px solid #CBD5E1;
+        border: 1px solid rgba(139, 92, 246, 0.2);
         display: inline-block;
     }
 
@@ -160,9 +161,9 @@
         font-weight: 700;
         padding: 0.25rem 0.65rem;
         border-radius: 8px;
-        background: #EEF2FF;
-        color: #4F46E5;
-        border: 1px solid #C7D2FE;
+        background: #F3E8FF;
+        color: #8B5CF6;
+        border: 1px solid rgba(139, 92, 246, 0.2);
         display: inline-flex;
         align-items: center;
         gap: 0.35rem;
@@ -241,6 +242,86 @@
         transform: translateY(-2px);
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
+
+    .directory-card-header,
+    .directory-card-footer {
+        background: #F8FAFC;
+        border-color: #E2E8F0 !important;
+    }
+
+    /* Dark Mode Theme Support for Employee Directory */
+    [data-bs-theme="dark"] .directory-card-header,
+    [data-bs-theme="dark"] .directory-card-footer {
+        background: #0F172A !important;
+        border-color: #334155 !important;
+    }
+
+    [data-bs-theme="dark"] .directory-card,
+    [data-bs-theme="dark"] .filter-panel-card {
+        background: #1E293B !important;
+        border-color: #334155 !important;
+        color: #F8FAFC !important;
+    }
+
+    [data-bs-theme="dark"] .filter-label-sm {
+        color: #94A3B8 !important;
+    }
+
+    [data-bs-theme="dark"] .filter-input-pill input,
+    [data-bs-theme="dark"] .filter-select-custom {
+        background-color: #0F172A !important;
+        border-color: #334155 !important;
+        color: #F8FAFC !important;
+    }
+
+    [data-bs-theme="dark"] .filter-chip-btn {
+        background-color: #0F172A !important;
+        border-color: #334155 !important;
+        color: #94A3B8 !important;
+    }
+
+    [data-bs-theme="dark"] .filter-chip-btn.active,
+    [data-bs-theme="dark"] .filter-chip-btn:hover {
+        background-color: #8B5CF6 !important;
+        border-color: #8B5CF6 !important;
+        color: #FFFFFF !important;
+    }
+
+    [data-bs-theme="dark"] .table-directory thead th {
+        background: #0F172A !important;
+        color: #CBD5E1 !important;
+        border-bottom-color: #334155 !important;
+    }
+
+    [data-bs-theme="dark"] .table-directory tbody tr {
+        border-bottom-color: #334155 !important;
+    }
+
+    [data-bs-theme="dark"] .table-directory tbody tr:hover {
+        background-color: #334155 !important;
+    }
+
+    [data-bs-theme="dark"] .table-directory tbody td {
+        color: #E2E8F0 !important;
+    }
+
+    [data-bs-theme="dark"] .emp-code-chip {
+        background: rgba(139, 92, 246, 0.15) !important;
+        color: #C084FC !important;
+        border-color: rgba(139, 92, 246, 0.3) !important;
+    }
+
+    [data-bs-theme="dark"] .dept-badge-pill {
+        background: rgba(139, 92, 246, 0.15) !important;
+        color: #C084FC !important;
+        border-color: rgba(139, 92, 246, 0.3) !important;
+    }
+
+    [data-bs-theme="dark"] .branch-badge-chip {
+        background: #0F172A !important;
+        border-color: #334155 !important;
+        color: #CBD5E1 !important;
+    }
 </style>
 @endpush
 
@@ -264,7 +345,7 @@
         </div>
         <div class="col-12 col-md-5 text-md-end">
             @can('employee.create')
-                <a href="{{ route('employees.create') }}" class="btn btn-light rounded-pill px-4 py-2 fw-bold text-indigo shadow-sm" style="color: #4F46E5;">
+                <a href="{{ route('employees.create') }}" class="btn btn-light rounded-pill px-4 py-2 fw-bold shadow-sm" style="color: #8B5CF6; background: #ffffff;">
                     <i class="bi bi-person-plus-fill me-1 fs-6"></i> Onboard New Employee
                 </a>
             @endcan
@@ -361,7 +442,7 @@
 
 <!-- Employees Canonical Table Card -->
 <div class="directory-card">
-    <div class="p-3 border-bottom d-flex justify-content-between align-items-center bg-light bg-opacity-50">
+    <div class="p-3 border-bottom d-flex justify-content-between align-items-center directory-card-header">
         <div class="fs-8 text-muted fw-bold">
             Showing <strong class="text-dark">{{ $employees->firstItem() ?? 0 }} - {{ $employees->lastItem() ?? 0 }}</strong> of <strong class="text-dark">{{ $employees->total() }}</strong> Employee Profiles
         </div>
@@ -437,7 +518,7 @@
                         <td class="text-end pe-3">
                             <div class="d-flex justify-content-end align-items-center gap-1.5">
                                 <a href="{{ route('employees.show', $emp->id) }}" class="action-btn-pill" 
-                                   style="background: #EEF2FF; color: #4F46E5;" title="View 360° Profile">
+                                   style="background: #F3E8FF; color: #8B5CF6;" title="View 360° Profile">
                                     <i class="bi bi-eye-fill fs-7"></i>
                                 </a>
                                 <a href="{{ route('employees.edit', $emp->id) }}" class="action-btn-pill" 
@@ -481,7 +562,7 @@
     </div>
 
     @if($employees->hasPages())
-        <div class="p-3 border-top bg-light d-flex justify-content-between align-items-center">
+        <div class="p-3 border-top d-flex justify-content-between align-items-center directory-card-footer">
             <div class="fs-8 text-muted">
                 Showing {{ $employees->firstItem() }} to {{ $employees->lastItem() }} of {{ $employees->total() }} entries
             </div>
@@ -496,35 +577,13 @@
 @push('scripts')
 <script>
     function confirmDeactivateEmployee(empId, empName, empCode, formEl) {
-        const isDark = document.documentElement.getAttribute('data-bs-theme') === 'dark';
-        
         Swal.fire({
-            title: `<div class="d-flex align-items-center justify-content-center gap-2 text-danger fw-bold fs-5 mb-1">
-                        <i class="bi bi-exclamation-triangle-fill fs-4"></i> Deactivate Employee Account?
-                    </div>`,
-            html: `
-                <div class="text-center py-2">
-                    <p class="fs-7 text-secondary mb-3" style="line-height: 1.6;">
-                        Are you sure you want to deactivate <strong class="text-dark">${empName}</strong> (<code class="text-primary">${empCode}</code>)?
-                    </p>
-                    <div class="alert alert-warning border-0 fs-8 py-2.5 px-3 text-start mb-0 rounded-3" style="background: ${isDark ? '#374151' : '#FFFBEB'}; color: ${isDark ? '#FDE68A' : '#92400E'};">
-                        <i class="bi bi-shield-exclamation me-1"></i>
-                        Deactivating will revoke active portal access and archive staff records.
-                    </div>
-                </div>
-            `,
+            icon: 'warning',
+            title: 'Deactivate Employee Account?',
+            text: `Are you sure you want to deactivate ${empName} (${empCode})? Deactivating will revoke active portal access and archive staff records.`,
             showCancelButton: true,
-            confirmButtonText: '<i class="bi bi-person-x-fill me-1"></i> Yes, Deactivate Account',
-            cancelButtonText: 'Cancel',
-            confirmButtonColor: '#EF4444',
-            cancelButtonColor: isDark ? '#4B5563' : '#64748B',
-            background: isDark ? '#1F2937' : '#ffffff',
-            color: isDark ? '#F8FAFC' : '#1E1B4B',
-            customClass: {
-                popup: 'rounded-4 border-0 shadow-lg p-4',
-                confirmButton: 'px-4 py-2.5 rounded-pill fw-bold fs-7 shadow-sm',
-                cancelButton: 'px-4 py-2.5 rounded-pill fw-bold fs-7'
-            }
+            confirmButtonText: 'Yes, Deactivate Account',
+            cancelButtonText: 'Cancel'
         }).then((result) => {
             if (result.isConfirmed) {
                 formEl.submit();
