@@ -38,59 +38,108 @@
         100% { transform: translateY(0px) rotate(0deg); }
     }
 
-    /* Hero Welcome Banner */
+    /* Executive Minimal Welcome Banner */
     .hero-welcome-banner {
-        background: linear-gradient(135deg, #8B5CF6 0%, #6366F1 100%);
-        border-radius: 16px;
-        padding: 2rem 2.25rem;
-        color: #ffffff;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 10px 30px -5px rgba(139, 92, 246, 0.3);
-        margin-bottom: 1.75rem;
-        border: none;
+        background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%) !important;
+        border-radius: 16px !important;
+        padding: 1.65rem 2rem !important;
+        color: #ffffff !important;
+        position: relative !important;
+        overflow: hidden !important;
+        box-shadow: 0 12px 32px -8px rgba(79, 70, 229, 0.35) !important;
+        margin-bottom: 1.75rem !important;
+        border: none !important;
     }
 
     .hero-welcome-banner::before {
         content: '';
         position: absolute;
-        top: -40%;
-        right: -5%;
-        width: 320px;
-        height: 320px;
-        background: radial-gradient(circle, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 70%);
+        top: -50%;
+        right: -10%;
+        width: 360px;
+        height: 360px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
         border-radius: 50%;
         pointer-events: none;
     }
 
     .hero-avatar {
-        width: 60px;
-        height: 60px;
+        width: 58px;
+        height: 58px;
         border-radius: 50%;
         object-fit: cover;
-        border: 3px solid rgba(255, 255, 255, 0.4);
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+        border: 2.5px solid rgba(255, 255, 255, 0.7) !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15) !important;
     }
 
-    .hero-quick-btn {
-        background: rgba(255, 255, 255, 0.2);
-        color: #ffffff;
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        padding: 0.55rem 1.1rem;
-        border-radius: 10px;
-        font-weight: 700;
-        font-size: 0.85rem;
-        transition: all 0.2s ease;
-        text-decoration: none;
+    .hero-date-badge {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.88);
+        background: rgba(255, 255, 255, 0.15);
+        padding: 0.25rem 0.75rem;
+        border-radius: 999px;
         display: inline-flex;
         align-items: center;
-        gap: 0.5rem;
+        backdrop-filter: blur(6px);
     }
 
-    .hero-quick-btn:hover {
-        background: #ffffff;
-        color: #8B5CF6;
-        transform: translateY(-2px);
+    .hero-title {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #ffffff;
+        letter-spacing: -0.02em;
+        line-height: 1.25;
+    }
+
+    .hero-subtitle {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.75);
+        font-weight: 400;
+    }
+
+    .btn-hero-primary {
+        background: #ffffff !important;
+        color: #4F46E5 !important;
+        border: none !important;
+        padding: 0.55rem 1.25rem !important;
+        border-radius: 10px !important;
+        font-weight: 700 !important;
+        font-size: 0.83rem !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+        transition: all 0.2s ease !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.4rem !important;
+    }
+
+    .btn-hero-primary:hover {
+        background: #F8FAFC !important;
+        color: #3730A3 !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18) !important;
+    }
+
+    .btn-hero-glass {
+        background: rgba(255, 255, 255, 0.15) !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(255, 255, 255, 0.25) !important;
+        padding: 0.55rem 1.1rem !important;
+        border-radius: 10px !important;
+        font-weight: 600 !important;
+        font-size: 0.83rem !important;
+        transition: all 0.2s ease !important;
+        text-decoration: none !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.4rem !important;
+    }
+
+    .btn-hero-glass:hover {
+        background: #ffffff !important;
+        color: #4F46E5 !important;
+        transform: translateY(-2px) !important;
     }
 
     /* Soft Diagonal Gradient Stat Cards (Only Summary Stat Cards get gradients) */
@@ -549,24 +598,26 @@
 @endpush
 
 @section('content')
-<!-- Hero Welcome Section (Fluid Mesh Animated Header) -->
+<!-- Sleek Executive Welcome Header (Minimal Premium Design) -->
 <div class="hero-welcome-banner">
     <div class="row align-items-center g-3">
         <div class="col-12 col-lg-7">
             <div class="d-flex align-items-center gap-3">
-                <img src="{{ auth()->user()?->avatar ? asset(auth()->user()->avatar) : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80' }}" 
-                     alt="Avatar" class="hero-avatar">
+                <div class="position-relative flex-shrink-0">
+                    <img src="{{ auth()->user()?->avatar ? asset(auth()->user()->avatar) : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80' }}" 
+                         alt="Avatar" class="hero-avatar">
+                </div>
                 <div>
-                    <div class="d-flex align-items-center gap-2 mb-1.5">
-                        <span class="badge rounded-pill bg-white bg-opacity-20 text-white fs-8 px-3 py-1">
-                            <i class="bi bi-clock me-1"></i> {{ date('l, F j, Y') }}
+                    <div class="d-flex align-items-center gap-2 mb-1">
+                        <span class="hero-date-badge">
+                            <i class="bi bi-calendar3 me-1.5 opacity-75"></i> {{ date('l, F j, Y') }}
                         </span>
                     </div>
-                    <h2 class="mb-1 fw-extrabold text-white" style="letter-spacing: -0.02em;">
-                        Welcome back, {{ auth()->user()?->name ?? 'System Super Admin' }} 👑
+                    <h2 class="hero-title mb-1">
+                        Welcome back, {{ auth()->user()?->name ?? 'System Super Admin' }} 👋
                     </h2>
-                    <p class="mb-0 text-white-50 fs-7">
-                        Here is your real-time workforce, department, and operational activity summary today.
+                    <p class="hero-subtitle mb-0">
+                        Here's your real-time workforce, department, and operational activity summary today.
                     </p>
                 </div>
             </div>
@@ -574,13 +625,13 @@
 
         <div class="col-12 col-lg-5 text-lg-end">
             <div class="d-flex flex-wrap gap-2 justify-content-lg-end align-items-center">
-                <a href="{{ Route::has('employees.create') ? route('employees.create') : '#' }}" class="btn btn-light text-dark font-bold px-3.5 py-2 rounded-3 fs-7 fw-bold shadow-sm text-decoration-none d-inline-flex align-items-center gap-1.5">
+                <a href="{{ Route::has('employees.create') ? route('employees.create') : '#' }}" class="btn-hero-primary">
                     <i class="bi bi-plus-lg"></i> Add Employee
                 </a>
-                <a href="{{ Route::has('attendance.index') ? route('attendance.index') : '#' }}" class="hero-quick-btn">
-                    <i class="bi bi-clock-history"></i> Attendance Logs
+                <a href="{{ Route::has('attendance.index') ? route('attendance.index') : '#' }}" class="btn-hero-glass">
+                    <i class="bi bi-clock-history"></i> Attendance
                 </a>
-                <a href="{{ Route::has('payroll.index') ? route('payroll.index') : (Route::has('payroll.runs.index') ? route('payroll.runs.index') : '#') }}" class="hero-quick-btn">
+                <a href="{{ Route::has('payroll.index') ? route('payroll.index') : (Route::has('payroll.runs.index') ? route('payroll.runs.index') : '#') }}" class="btn-hero-glass">
                     <i class="bi bi-cash-stack"></i> Payroll
                 </a>
             </div>

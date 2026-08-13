@@ -2,128 +2,60 @@
 
 @push('styles')
 <style>
-    @keyframes gradientMesh {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    .calendar-hero {
-        background: linear-gradient(-45deg, #1E1B4B, #312E81, #4338CA, #6366F1);
-        background-size: 300% 300%;
-        animation: gradientMesh 12s ease infinite, fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        border-radius: 24px;
-        padding: 2.25rem 2.5rem;
+    /* Premium Executive Side-Scroll-Free Calendar */
+    .calendar-hero-card {
+        background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+        border-radius: 16px;
+        padding: 1.5rem 2rem;
         color: #ffffff;
-        margin-bottom: 1.75rem;
-        box-shadow: 0 20px 45px rgba(30, 27, 75, 0.3);
-    }
-
-    /* Refined Image-Style Soft Pastel Cards */
-    .pastel-ui8-card {
-        border-radius: 20px;
-        padding: 1.25rem 1.35rem;
-        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        min-height: 145px;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 10px 30px -5px rgba(79, 70, 229, 0.35);
         position: relative;
-        border: 1px solid transparent;
-        animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+        overflow: hidden;
     }
 
-    .pastel-ui8-card:hover {
-        transform: translateY(-5px) scale(1.015);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+    .calendar-hero-card::before {
+        content: '';
+        position: absolute;
+        top: -40%;
+        right: -5%;
+        width: 320px;
+        height: 320px;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
     }
 
-    .card-pastel-emerald {
-        background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
-        border-color: #A7F3D0;
-    }
-
-    .card-pastel-amber {
-        background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
-        border-color: #FDE68A;
-    }
-
-    .card-pastel-purple {
-        background: linear-gradient(135deg, #F3E8FF 0%, #EDE9FE 100%);
-        border-color: #DDD6FE;
-    }
-
-    .card-pastel-indigo {
-        background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
-        border-color: #BAE6FD;
-    }
-
-    .ui8-pill-val {
-        background: #ffffff;
-        padding: 0.3rem 0.85rem;
-        border-radius: 999px;
-        font-weight: 800;
-        font-size: 0.85rem;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
-        display: inline-flex;
-        align-items: center;
-    }
-
-    .ui8-card-title {
-        font-size: 1.05rem;
-        font-weight: 800;
-        letter-spacing: -0.01em;
-        color: #1E1B4B;
-        margin-top: 0.5rem;
-        margin-bottom: 0.15rem;
-    }
-
-    .ui8-card-sub {
-        font-size: 0.76rem;
-        color: #64748B;
-        font-weight: 600;
-    }
-
-    .ui8-tag-chip {
-        background: #ffffff;
-        font-size: 0.7rem;
-        font-weight: 700;
-        padding: 0.2rem 0.6rem;
-        border-radius: 8px;
-        color: #475569;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-    }
-
-    /* Calendar Control Bar & Grid */
     .calendar-container-card {
         background: #ffffff;
-        border-radius: 22px;
-        border: 1px solid #EFEFF7;
-        box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+        border-radius: 16px;
+        border: 1px solid #E2E8F0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
         overflow: hidden;
-        animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+        width: 100%;
     }
 
     .calendar-header-toolbar {
         background: #F8FAFC;
-        padding: 1.15rem 1.5rem;
-        border-bottom: 1.5px solid #E2E8F0;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #E2E8F0;
         display: flex;
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
-        gap: 1rem;
+        gap: 0.75rem;
+    }
+
+    /* Fixed Table Layout - Guarantees 0 Horizontal Scrollbar / Side Scroll */
+    .calendar-table-wrapper {
+        width: 100%;
+        overflow-x: hidden;
     }
 
     .calendar-table {
         width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
+        table-layout: fixed; /* Equal 14.285% width distribution */
+        border-collapse: collapse;
         margin-bottom: 0;
     }
 
@@ -132,12 +64,13 @@
         font-size: 0.72rem;
         font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 0.06em;
+        letter-spacing: 0.05em;
         color: #475569;
         text-align: center;
-        padding: 0.85rem 0.5rem;
-        border-bottom: 1.5px solid #E2E8F0;
+        padding: 0.75rem 0.25rem;
+        border-bottom: 1px solid #E2E8F0;
         border-right: 1px solid #E2E8F0;
+        width: 14.285%;
     }
 
     .calendar-table th:last-child {
@@ -145,25 +78,24 @@
     }
 
     .calendar-day-cell {
-        height: 125px;
+        width: 14.285%;
+        height: 115px;
         vertical-align: top;
-        padding: 0.65rem;
-        border-bottom: 1px solid #F1F5F9;
-        border-right: 1px solid #F1F5F9;
+        padding: 0.5rem;
+        border-bottom: 1px solid #E2E8F0;
+        border-right: 1px solid #E2E8F0;
         background: #ffffff;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: background 0.15s ease;
         position: relative;
         cursor: pointer;
     }
 
-    .calendar-day-cell:hover {
-        background: #F0F4FF !important;
-        box-shadow: inset 0 0 0 2px #4F46E5;
+    .calendar-day-cell:last-child {
+        border-right: none;
     }
 
-    .calendar-day-cell:hover .add-event-hint {
-        opacity: 1;
-        transform: scale(1);
+    .calendar-day-cell:hover {
+        background: #F4F5FF !important;
     }
 
     .calendar-day-cell.weekend {
@@ -172,51 +104,69 @@
 
     .calendar-day-cell.other-month {
         background: #F8FAFC;
-        opacity: 0.5;
+        opacity: 0.45;
     }
 
     .day-number-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 0.4rem;
+        margin-bottom: 0.35rem;
     }
 
     .day-number {
-        font-size: 0.85rem;
-        font-weight: 800;
+        font-size: 0.8rem;
+        font-weight: 700;
         color: #334155;
-        display: inline-block;
-    }
-
-    .day-number.today {
-        background: #4338CA;
-        color: #ffffff;
-        width: 26px;
-        height: 26px;
-        border-radius: 50%;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 4px 10px rgba(67, 56, 202, 0.3);
+    }
+
+    .day-number.today {
+        background: #4F46E5;
+        color: #ffffff;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        font-weight: 800;
+        font-size: 0.75rem;
+        box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35);
     }
 
     .add-event-hint {
         opacity: 0;
-        font-size: 0.7rem;
+        font-size: 0.68rem;
         font-weight: 700;
         color: #4F46E5;
-        transition: all 0.2s ease;
-        transform: scale(0.8);
+        transition: opacity 0.15s ease;
+    }
+
+    .calendar-day-cell:hover .add-event-hint {
+        opacity: 1;
+    }
+
+    .events-container {
+        max-height: 75px;
+        overflow-y: auto;
+        padding-right: 2px;
+    }
+
+    .events-container::-webkit-scrollbar {
+        width: 3px;
+    }
+    .events-container::-webkit-scrollbar-thumb {
+        background: #CBD5E1;
+        border-radius: 4px;
     }
 
     /* Event Badge Items */
     .event-chip-pill {
-        font-size: 0.7rem;
-        font-weight: 700;
-        padding: 0.25rem 0.55rem;
-        border-radius: 8px;
-        margin-bottom: 0.25rem;
+        font-size: 0.68rem;
+        font-weight: 600;
+        padding: 0.2rem 0.45rem;
+        border-radius: 6px;
+        margin-bottom: 0.2rem;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -224,59 +174,100 @@
         overflow: hidden;
         text-overflow: ellipsis;
         cursor: pointer;
-        transition: all 0.2s ease;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        transition: transform 0.15s ease;
+        max-width: 100%;
+        line-height: 1.25;
+    }
+
+    .event-chip-pill span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
     .event-chip-pill:hover {
-        transform: scale(1.02);
+        transform: scale(1.01);
     }
 
     .event-chip-pill.red {
         background: #FEE2E2;
         color: #991B1B;
-        border-left: 3px solid #EF4444;
+        border-left: 2.5px solid #EF4444;
     }
 
     .event-chip-pill.indigo {
         background: #EEF2FF;
         color: #3730A3;
-        border-left: 3px solid #6366F1;
+        border-left: 2.5px solid #6366F1;
     }
 
     .event-chip-pill.emerald {
         background: #ECFDF5;
         color: #065F46;
-        border-left: 3px solid #10B981;
+        border-left: 2.5px solid #10B981;
     }
 
     .event-chip-pill.amber {
         background: #FEF3C7;
         color: #92400E;
-        border-left: 3px solid #F59E0B;
+        border-left: 2.5px solid #F59E0B;
+    }
+
+    /* KPI Summary Cards */
+    .cal-kpi-card {
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1px solid #E2E8F0;
+        padding: 0.85rem 1.15rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .cal-kpi-val {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #1E293B;
+        line-height: 1;
+    }
+
+    .cal-kpi-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #64748B;
     }
 
     /* Dark Mode Overrides */
-    [data-bs-theme="dark"] .pastel-ui8-card,
-    [data-bs-theme="dark"] .calendar-container-card {
-        background: #1F2937 !important;
-        border-color: #374151 !important;
+    [data-bs-theme="dark"] .calendar-container-card,
+    [data-bs-theme="dark"] .cal-kpi-card {
+        background: #1E293B !important;
+        border-color: #334155 !important;
     }
-    [data-bs-theme="dark"] .ui8-card-title { color: #F8FAFC !important; }
-    [data-bs-theme="dark"] .ui8-pill-val,
-    [data-bs-theme="dark"] .ui8-tag-chip {
-        background: #111827 !important;
-        color: #F8FAFC !important;
-        border-color: #374151 !important;
+    [data-bs-theme="dark"] .calendar-header-toolbar {
+        background: #0F172A !important;
+        border-color: #334155 !important;
+    }
+    [data-bs-theme="dark"] .calendar-table th {
+        background: #0F172A !important;
+        color: #94A3B8 !important;
+        border-color: #334155 !important;
     }
     [data-bs-theme="dark"] .calendar-day-cell {
-        background: #1F2937 !important;
-        border-color: #374151 !important;
+        background: #1E293B !important;
+        border-color: #334155 !important;
+    }
+    [data-bs-theme="dark"] .calendar-day-cell.weekend,
+    [data-bs-theme="dark"] .calendar-day-cell.other-month {
+        background: #0F172A !important;
     }
     [data-bs-theme="dark"] .calendar-day-cell:hover {
-        background: #374151 !important;
+        background: #334155 !important;
     }
     [data-bs-theme="dark"] .day-number {
+        color: #F8FAFC !important;
+    }
+    [data-bs-theme="dark"] .cal-kpi-val {
         color: #F8FAFC !important;
     }
 </style>
@@ -284,159 +275,83 @@
 
 @section('content')
 <!-- Hero Header -->
-<div class="calendar-hero">
+<div class="calendar-hero-card">
     <div class="row align-items-center g-3">
         <div class="col-12 col-md-8">
             <div class="d-flex align-items-center gap-2 mb-1">
                 <span class="badge rounded-pill bg-white bg-opacity-20 text-white fs-8 px-2.5 py-1">
-                    <i class="bi bi-calendar3 me-1"></i> Master Organization Calendar
+                    <i class="bi bi-calendar3 me-1"></i> Master Organization Schedule
                 </span>
-                <span class="fs-8 text-white-50">• Year {{ $year }}</span>
+                <span class="fs-8 text-white-75">• {{ $monthName }} {{ $year }}</span>
             </div>
-            <h3 class="mb-1 fw-extrabold text-white" style="letter-spacing: -0.02em;">
-                Company Master Schedule & Events
+            <h3 class="mb-1 fw-black text-white style-heading" style="letter-spacing: -0.02em;">
+                Company Calendar & Live Schedule
             </h3>
-            <p class="mb-0 text-white-50 fs-7">
-                Click any calendar date cell to schedule an event for that specific day.
+            <p class="mb-0 text-white-75 fs-7">
+                Real-time synchronized company events, approved employee leaves, and notices. Click any date cell to schedule.
             </p>
         </div>
         <div class="col-12 col-md-4 text-md-end">
-            <button class="btn btn-light rounded-pill px-4 py-2.5 fw-bold text-indigo shadow-sm"
+            <button class="btn btn-light rounded-pill px-3.5 py-2 fw-bold text-indigo shadow-sm"
                     onclick="openScheduleModal('{{ date('Y-m-d') }}')" style="color: #4F46E5;">
-                <i class="bi bi-calendar-plus-fill me-1.5 fs-6"></i> Schedule New Event
+                <i class="bi bi-plus-circle-fill me-1 fs-6"></i> Schedule Event
             </button>
         </div>
     </div>
 </div>
 
-<!-- Image-Style Soft Pastel KPI Cards (4 Cards in 1 Row) -->
-<div class="row g-3 mb-4">
-    <!-- Card 1: Month Events (Soft Sky Blue) -->
-    <div class="col-12 col-sm-6 col-xl-3">
-        <div class="pastel-ui8-card card-pastel-indigo">
+<!-- Compact Summary Bar -->
+<div class="row g-3 mb-3">
+    <div class="col-6 col-md-3">
+        <div class="cal-kpi-card">
             <div>
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fs-8 text-secondary fw-semibold">
-                        <i class="bi bi-calendar-event me-1"></i> Month Schedule
-                    </span>
-                    <span class="ui8-pill-val" style="color: #0284C7;">
-                        {{ $stats['total_events'] }} Events
-                    </span>
-                </div>
-                <h4 class="ui8-card-title">Events This Month</h4>
-                <div class="ui8-card-sub mb-3">
-                    <i class="bi bi-building me-1 opacity-75"></i> {{ $monthName }} {{ $year }}
-                </div>
+                <div class="cal-kpi-label">Month Events</div>
+                <div class="cal-kpi-val text-primary">{{ $stats['total_events'] }}</div>
             </div>
-            <div class="d-flex justify-content-between align-items-center pt-2">
-                <div class="d-flex align-items-center">
-                    <span class="badge rounded-circle bg-white text-info shadow-sm p-1.5 fs-8" style="width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; font-weight: 800;">
-                        <i class="bi bi-calendar-check"></i>
-                    </span>
-                </div>
-                <div class="d-flex gap-1">
-                    <span class="ui8-tag-chip">#Events</span>
-                    <span class="ui8-tag-chip">#Schedule</span>
-                </div>
+            <div class="badge rounded-circle bg-primary bg-opacity-10 text-primary p-2 fs-6">
+                <i class="bi bi-calendar-event"></i>
             </div>
         </div>
     </div>
 
-    <!-- Card 2: Public Holidays (Soft Amber) -->
-    <div class="col-12 col-sm-6 col-xl-3">
-        <div class="pastel-ui8-card card-pastel-amber">
+    <div class="col-6 col-md-3">
+        <div class="cal-kpi-card">
             <div>
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fs-8 text-secondary fw-semibold">
-                        <i class="bi bi-flag-fill me-1"></i> Public Holidays
-                    </span>
-                    <span class="ui8-pill-val" style="color: #D97706;">
-                        {{ $stats['holidays_count'] }} Holidays
-                    </span>
-                </div>
-                <h4 class="ui8-card-title">Official Holidays</h4>
-                <div class="ui8-card-sub mb-3">
-                    <i class="bi bi-building me-1 opacity-75"></i> Office Closures
-                </div>
+                <div class="cal-kpi-label">Public Holidays</div>
+                <div class="cal-kpi-val text-danger">{{ $stats['holidays_count'] }}</div>
             </div>
-            <div class="d-flex justify-content-between align-items-center pt-2">
-                <div class="d-flex align-items-center">
-                    <span class="badge rounded-circle bg-white text-warning shadow-sm p-1.5 fs-8" style="width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; font-weight: 800;">
-                        <i class="bi bi-flag-fill"></i>
-                    </span>
-                </div>
-                <div class="d-flex gap-1">
-                    <span class="ui8-tag-chip">#Holidays</span>
-                    <span class="ui8-tag-chip">#Official</span>
-                </div>
+            <div class="badge rounded-circle bg-danger bg-opacity-10 text-danger p-2 fs-6">
+                <i class="bi bi-flag-fill"></i>
             </div>
         </div>
     </div>
 
-    <!-- Card 3: Sprint Review (Soft Emerald) -->
-    <div class="col-12 col-sm-6 col-xl-3">
-        <div class="pastel-ui8-card card-pastel-emerald">
+    <div class="col-6 col-md-3">
+        <div class="cal-kpi-card">
             <div>
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fs-8 text-secondary fw-semibold">
-                        <i class="bi bi-kanban me-1"></i> Milestone Deadlines
-                    </span>
-                    <span class="ui8-pill-val" style="color: #059669;">
-                        {{ $stats['sprints_count'] }} Sprints
-                    </span>
-                </div>
-                <h4 class="ui8-card-title">Project Milestones</h4>
-                <div class="ui8-card-sub mb-3">
-                    <i class="bi bi-building me-1 opacity-75"></i> Key Deliverables
-                </div>
+                <div class="cal-kpi-label">Sprints & Audits</div>
+                <div class="cal-kpi-val text-warning">{{ $stats['sprints_count'] }}</div>
             </div>
-            <div class="d-flex justify-content-between align-items-center pt-2">
-                <div class="d-flex align-items-center">
-                    <span class="badge rounded-circle bg-white text-success shadow-sm p-1.5 fs-8" style="width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; font-weight: 800;">
-                        <i class="bi bi-lightning-fill"></i>
-                    </span>
-                </div>
-                <div class="d-flex gap-1">
-                    <span class="ui8-tag-chip">#Sprints</span>
-                    <span class="ui8-tag-chip">#Milestones</span>
-                </div>
+            <div class="badge rounded-circle bg-warning bg-opacity-10 text-warning p-2 fs-6">
+                <i class="bi bi-lightning-fill"></i>
             </div>
         </div>
     </div>
 
-    <!-- Card 4: Status (Soft Purple) -->
-    <div class="col-12 col-sm-6 col-xl-3">
-        <div class="pastel-ui8-card card-pastel-purple">
+    <div class="col-6 col-md-3">
+        <div class="cal-kpi-card">
             <div>
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fs-8 text-secondary fw-semibold">
-                        <i class="bi bi-calendar-plus me-1"></i> Interactive
-                    </span>
-                    <span class="ui8-pill-val" style="color: #7C3AED;">
-                        Click Date
-                    </span>
-                </div>
-                <h4 class="ui8-card-title">Click Date to Add</h4>
-                <div class="ui8-card-sub mb-3">
-                    <i class="bi bi-building me-1 opacity-75"></i> Instant Event Popups
-                </div>
+                <div class="cal-kpi-label">Today's Date</div>
+                <div class="cal-kpi-val text-success" style="font-size: 1rem;">{{ date('M d, Y') }}</div>
             </div>
-            <div class="d-flex justify-content-between align-items-center pt-2">
-                <div class="d-flex align-items-center">
-                    <span class="badge rounded-circle bg-white text-purple shadow-sm p-1.5 fs-8" style="width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center; font-weight: 800; color: #7C3AED;">
-                        <i class="bi bi-cursor-fill"></i>
-                    </span>
-                </div>
-                <div class="d-flex gap-1">
-                    <span class="ui8-tag-chip">#Clickable</span>
-                    <span class="ui8-tag-chip">#Interactive</span>
-                </div>
+            <div class="badge rounded-circle bg-success bg-opacity-10 text-success p-2 fs-6">
+                <i class="bi bi-clock-history"></i>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Master Calendar Card -->
+<!-- Master Calendar Grid Card (Side-Scroll Free) -->
 <div class="calendar-container-card">
     <!-- Toolbar Header -->
     <div class="calendar-header-toolbar">
@@ -450,35 +365,35 @@
                 $nextY = $year;
                 if ($nextM > 12) { $nextM = 1; $nextY++; }
             @endphp
-            <div class="btn-group btn-group-sm">
-                <a href="{{ route('calendar.index', ['month' => $prevM, 'year' => $prevY]) }}" class="btn btn-white border fw-bold text-dark"><i class="bi bi-chevron-left"></i></a>
-                <a href="{{ route('calendar.index', ['month' => $nextM, 'year' => $nextY]) }}" class="btn btn-white border fw-bold text-dark"><i class="bi bi-chevron-right"></i></a>
+            <div class="btn-group btn-group-sm shadow-sm rounded-pill overflow-hidden border">
+                <a href="{{ route('calendar.index', ['month' => $prevM, 'year' => $prevY]) }}" class="btn btn-white fw-bold text-dark px-3 py-1.5"><i class="bi bi-chevron-left"></i> Prev</a>
+                <a href="{{ route('calendar.index', ['month' => $nextM, 'year' => $nextY]) }}" class="btn btn-white fw-bold text-dark px-3 py-1.5">Next <i class="bi bi-chevron-right"></i></a>
             </div>
-            <h4 class="fw-extrabold text-dark mb-0" style="letter-spacing: -0.02em;">{{ $monthName }} {{ $year }}</h4>
-            <span class="badge bg-indigo bg-opacity-10 text-indigo px-3 py-1 rounded-pill fs-8 fw-bold" style="background: #EEF2FF; color: #4338CA;">
-                <i class="bi bi-clock me-1"></i> Today: July 25, 2026
+            <h4 class="fw-black text-dark mb-0" style="letter-spacing: -0.02em;">{{ $monthName }} {{ $year }}</h4>
+            <span class="badge bg-indigo bg-opacity-10 text-indigo px-3 py-1.5 rounded-pill fs-8 fw-bold" style="background: #EEF2FF; color: #4338CA;">
+                <i class="bi bi-clock me-1"></i> Today: {{ date('F j, Y') }}
             </span>
         </div>
 
         <div class="d-flex align-items-center gap-2">
             <span class="fs-8 text-muted fw-bold">
-                <i class="bi bi-info-circle me-1"></i> Click any grid box below to schedule an event for that date
+                <i class="bi bi-info-circle me-1"></i> Click any cell to add an event
             </span>
         </div>
     </div>
 
-    <!-- Calendar Month Table -->
-    <div class="table-responsive">
+    <!-- Fixed Width Calendar Table - Fits 100% Viewport Width with 0 Side-Scroll -->
+    <div class="calendar-table-wrapper">
         <table class="calendar-table">
             <thead>
                 <tr>
-                    <th style="width: 14.28%;">Sun</th>
-                    <th style="width: 14.28%;">Mon</th>
-                    <th style="width: 14.28%;">Tue</th>
-                    <th style="width: 14.28%;">Wed</th>
-                    <th style="width: 14.28%;">Thu</th>
-                    <th style="width: 14.28%;">Fri</th>
-                    <th style="width: 14.28%;">Sat</th>
+                    <th>Sun</th>
+                    <th>Mon</th>
+                    <th>Tue</th>
+                    <th>Wed</th>
+                    <th>Thu</th>
+                    <th>Fri</th>
+                    <th>Sat</th>
                 </tr>
             </thead>
             <tbody>
@@ -501,13 +416,17 @@
                                     <span class="add-event-hint"><i class="bi bi-plus-circle-fill"></i> Add</span>
                                 </div>
 
-                                @foreach($dayEvents as $ev)
-                                    <div class="event-chip-pill {{ $ev->type }}" 
-                                         onclick="event.stopPropagation(); viewEventModal('{{ $ev->id }}', '{{ addslashes($ev->title) }}', '{{ addslashes($ev->description) }}', '{{ $ev->event_date->format('M d, Y') }}', '{{ $ev->type }}')">
-                                        <span>{{ $ev->title }}</span>
-                                        <i class="bi bi-trash-fill fs-8 text-danger ms-1 opacity-75" onclick="event.stopPropagation(); confirmDeleteEvent('{{ $ev->id }}', '{{ addslashes($ev->title) }}');" title="Delete Event"></i>
-                                    </div>
-                                @endforeach
+                                <div class="events-container">
+                                    @foreach($dayEvents as $ev)
+                                        <div class="event-chip-pill {{ $ev->type }}" 
+                                             onclick="event.stopPropagation(); viewEventModal('{{ $ev->id }}', '{{ addslashes($ev->title) }}', '{{ addslashes($ev->description) }}', '{{ $ev->event_date->format('M d, Y') }}', '{{ $ev->type }}')">
+                                            <span>{{ $ev->title }}</span>
+                                            @if($ev->is_custom ?? true)
+                                                <i class="bi bi-trash-fill fs-8 text-danger ms-1 opacity-75" onclick="event.stopPropagation(); confirmDeleteEvent('{{ $ev->id }}', '{{ addslashes($ev->title) }}');" title="Delete Event"></i>
+                                            @endif
+                                        </div>
+                                    @endforeach
+                                </div>
                             </td>
                         @endforeach
                     </tr>

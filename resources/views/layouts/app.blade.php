@@ -1431,6 +1431,7 @@
             color: #1A1A2E !important;
         }
     </style>
+    @stack('styles')
 </head>
 
 <body>
