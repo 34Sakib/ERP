@@ -254,7 +254,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr id="desig-row-1">
+                @forelse($designations as $desig)
+                <tr>
                     <td class="ps-3"><input type="checkbox" class="form-check-input row-checkbox"></td>
                     <td>
                         <div class="d-flex align-items-center gap-2.5">
@@ -262,80 +263,49 @@
                                 <i class="bi bi-person-badge-fill fs-6"></i>
                             </div>
                             <div>
-                                <div class="fw-bold text-dark fs-7" id="desig-title-1">Senior Full Stack Engineer</div>
-                                <div class="fs-8 text-muted">Technical Specialist Band L4</div>
+                                <div class="fw-bold text-dark fs-7">{{ $desig->title }}</div>
+                                <div class="fs-8 text-muted">Seniority Band L{{ $desig->level ?? 1 }}</div>
                             </div>
                         </div>
                     </td>
-                    <td><span class="badge bg-light text-dark border px-2.5 py-1 fs-8">Engineering</span></td>
-                    <td><span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2.5 py-1 rounded-pill fs-8">Senior Level (L4)</span></td>
+                    <td><span class="badge bg-light text-dark border px-2.5 py-1 fs-8">{{ $desig->department?->name ?? 'General' }}</span></td>
+                    <td><span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2.5 py-1 rounded-pill fs-8">Level {{ $desig->level ?? 1 }}</span></td>
                     <td>
-                        <div class="d-flex align-items-center gap-2" 
-                             onclick="Swal.fire({title: 'Senior Full Stack Engineers', html: '<div class=\'text-start fs-7\'><div class=\'p-2 bg-light rounded mb-2 d-flex align-items-center gap-2\'><img src=\'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80\' class=\'rounded-circle\' style=\'width:32px;height:32px;\'><div><b>Alex Rivera</b><br><span class=\'text-muted fs-8\'>Emp ID: EMP-104</span></div></div><div class=\'p-2 bg-light rounded d-flex align-items-center gap-2\'><img src=\'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80\' class=\'rounded-circle\' style=\'width:32px;height:32px;\'><div><b>Elena Rostova</b><br><span class=\'text-muted fs-8\'>Emp ID: EMP-108</span></div></div></div>', confirmButtonColor: '#2563EB'})">
-                            <div class="avatar-stack-group">
-                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=80&q=80" class="avatar-stack-item">
-                                <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=80&q=80" class="avatar-stack-item">
-                            </div>
-                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2 py-0.5 rounded-pill fs-8 fw-bold">
-                                8 Staff <i class="bi bi-eye-fill ms-0.5"></i>
-                            </span>
-                        </div>
+                        <span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2.5 py-1 rounded-pill fs-8 fw-bold">
+                            {{ $desig->employees_count }} Staff Assigned
+                        </span>
                     </td>
                     <td>
-                        <span class="status-badge-dot active"><span class="status-dot-pulse"></span> Active</span>
+                        @if($desig->status)
+                            <span class="status-badge-dot active"><span class="status-dot-pulse"></span> Active</span>
+                        @else
+                            <span class="status-badge-dot inactive">Inactive</span>
+                        @endif
                     </td>
                     <td class="text-end pe-3">
                         <div class="d-flex justify-content-end align-items-center gap-1">
-                            <button class="btn btn-light btn-sm text-primary rounded-circle p-1.5" style="width: 32px; height: 32px;" data-bs-toggle="modal" data-bs-target="#editDesignationModal-1" title="Edit Designation">
+                            <button class="btn btn-light btn-sm text-primary rounded-circle p-1.5" style="width: 32px; height: 32px;"
+                                    onclick="editDesignationModal('{{ $desig->id }}', '{{ route('designations.update', $desig->id) }}', '{{ addslashes($desig->title) }}', '{{ $desig->department_id }}', '{{ $desig->level }}')" title="Edit Designation">
                                 <i class="bi bi-pencil-fill"></i>
                             </button>
-                            <button class="btn btn-light btn-sm text-danger rounded-circle p-1.5" style="width: 32px; height: 32px;" title="Delete Designation" onclick="if(confirm('Delete Senior Full Stack Engineer designation?')){ document.getElementById('desig-row-1').remove(); Swal.fire({icon:'success', title:'Deleted!', text:'Designation removed successfully.', timer:1500, showConfirmButton:false}); }">
-                                <i class="bi bi-trash"></i>
-                            </button>
+                            <form action="{{ route('designations.destroy', $desig->id) }}" method="POST" onsubmit="return confirm('Delete {{ addslashes($desig->title) }} designation?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-light btn-sm text-danger rounded-circle p-1.5" style="width: 32px; height: 32px;" title="Delete Designation">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
                         </div>
                     </td>
                 </tr>
-
-                <tr id="desig-row-2">
-                    <td class="ps-3"><input type="checkbox" class="form-check-input row-checkbox"></td>
-                    <td>
-                        <div class="d-flex align-items-center gap-2.5">
-                            <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: #F3E8FF; color: #7E22CE;">
-                                <i class="bi bi-person-badge-fill fs-6"></i>
-                            </div>
-                            <div>
-                                <div class="fw-bold text-dark fs-7" id="desig-title-2">Senior Product UX Designer</div>
-                                <div class="fs-8 text-muted">Creative Specialist Band L4</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td><span class="badge bg-light text-dark border px-2.5 py-1 fs-8">Design & UX</span></td>
-                    <td><span class="badge bg-purple bg-opacity-10 text-purple border border-purple-subtle px-2.5 py-1 rounded-pill fs-8" style="background: #F3E8FF; color: #7E22CE;">Senior Level (L4)</span></td>
-                    <td>
-                        <div class="d-flex align-items-center gap-2" 
-                             onclick="Swal.fire({title: 'Senior Product UX Designers', html: '<div class=\'text-start fs-7\'><div class=\'p-2 bg-light rounded mb-2 d-flex align-items-center gap-2\'><img src=\'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80\' class=\'rounded-circle\' style=\'width:32px;height:32px;\'><div><b>Chloe Vance</b><br><span class=\'text-muted fs-8\'>Emp ID: EMP-112</span></div></div></div>', confirmButtonColor: '#2563EB'})">
-                            <div class="avatar-stack-group">
-                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80" class="avatar-stack-item">
-                            </div>
-                            <span class="badge bg-purple bg-opacity-10 text-purple border border-purple-subtle px-2 py-0.5 rounded-pill fs-8 fw-bold" style="background: #F3E8FF; color: #7E22CE;">
-                                4 Staff <i class="bi bi-eye-fill ms-0.5"></i>
-                            </span>
-                        </div>
-                    </td>
-                    <td>
-                        <span class="status-badge-dot active"><span class="status-dot-pulse"></span> Active</span>
-                    </td>
-                    <td class="text-end pe-3">
-                        <div class="d-flex justify-content-end align-items-center gap-1">
-                            <button class="btn btn-light btn-sm text-primary rounded-circle p-1.5" style="width: 32px; height: 32px;" data-bs-toggle="modal" data-bs-target="#editDesignationModal-2" title="Edit Designation">
-                                <i class="bi bi-pencil-fill"></i>
-                            </button>
-                            <button class="btn btn-light btn-sm text-danger rounded-circle p-1.5" style="width: 32px; height: 32px;" title="Delete Designation" onclick="if(confirm('Delete Senior Product UX Designer designation?')){ document.getElementById('desig-row-2').remove(); Swal.fire({icon:'success', title:'Deleted!', text:'Designation removed successfully.', timer:1500, showConfirmButton:false}); }">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
+                @empty
+                <tr>
+                    <td colspan="7" class="text-center p-4 text-muted fs-8">
+                        <i class="bi bi-person-badge fs-4 d-block mb-1"></i>
+                        No designations configured yet.
                     </td>
                 </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
@@ -345,7 +315,8 @@
 <div class="modal fade" id="createDesignationModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content rounded-4 border-0 shadow-lg">
-            <form onsubmit="event.preventDefault(); $('#createDesignationModal').modal('hide'); Swal.fire({icon:'success', title:'Designation Created!', text:'New designation added to matrix.', confirmButtonColor: '#2563EB', customClass: {popup:'rounded-4 border-0 shadow-lg'}})">
+            <form action="{{ route('designations.store') }}" method="POST">
+                @csrf
                 <div class="modal-header border-bottom">
                     <h5 class="modal-title fw-extrabold text-dark fs-6">Add New Designation</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -353,23 +324,25 @@
                 <div class="modal-body fs-7">
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Designation Title *</label>
-                        <input type="text" class="form-control rounded-3" required placeholder="e.g. Senior DevOps Specialist">
+                        <input type="text" name="title" class="form-control rounded-3" required placeholder="e.g. Senior DevOps Specialist">
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Department *</label>
-                        <select class="form-select rounded-3">
+                        <select name="department_id" class="form-select rounded-3" required>
+                            <option value="">Select Department</option>
                             @foreach($departments as $d)
                                 <option value="{{ $d->id }}">{{ $d->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Seniority Rank Band</label>
-                        <select class="form-select rounded-3">
-                            <option>Junior Level (L1)</option>
-                            <option>Mid Level (L2-L3)</option>
-                            <option selected>Senior Level (L4)</option>
-                            <option>Lead / Principal (L5)</option>
+                        <label class="form-label fw-semibold">Seniority Rank Level (1-5)</label>
+                        <select name="level" class="form-select rounded-3">
+                            <option value="1">Junior Level (L1)</option>
+                            <option value="2">Mid Level (L2)</option>
+                            <option value="3">Senior Level (L3)</option>
+                            <option value="4" selected>Lead Specialist (L4)</option>
+                            <option value="5">Principal / Director (L5)</option>
                         </select>
                     </div>
                 </div>
@@ -382,33 +355,38 @@
     </div>
 </div>
 
-<!-- Modal: Edit Designation 1 -->
-<div class="modal fade" id="editDesignationModal-1" tabindex="-1">
+<!-- Modal: Dynamic Edit Designation -->
+<div class="modal fade" id="editDesignationModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content rounded-4 border-0 shadow-lg">
-            <form onsubmit="event.preventDefault(); $('#editDesignationModal-1').modal('hide'); Swal.fire({icon:'success', title:'Designation Updated!', text:'Senior Full Stack Engineer title updated.', confirmButtonColor: '#2563EB', customClass: {popup:'rounded-4 border-0 shadow-lg'}})">
+            <form id="editDesignationForm" action="" method="POST">
+                @csrf
+                @method('PUT')
                 <div class="modal-header border-bottom">
-                    <h5 class="modal-title fw-extrabold text-dark fs-6">Edit Designation: Senior Full Stack Engineer</h5>
+                    <h5 class="modal-title fw-extrabold text-dark fs-6">Edit Designation Title</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body fs-7">
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Designation Title *</label>
-                        <input type="text" class="form-control rounded-3" value="Senior Full Stack Engineer" required>
+                        <input type="text" name="title" id="edit_desig_title" class="form-control rounded-3" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Department *</label>
-                        <select class="form-select rounded-3">
+                        <select name="department_id" id="edit_desig_department_id" class="form-select rounded-3" required>
                             @foreach($departments as $d)
-                                <option value="{{ $d->id }}" {{ $d->name == 'Engineering' ? 'selected' : '' }}>{{ $d->name }}</option>
+                                <option value="{{ $d->id }}">{{ $d->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Seniority Rank Band</label>
-                        <select class="form-select rounded-3">
-                            <option selected>Senior Level (L4)</option>
-                            <option>Lead / Principal (L5)</option>
+                        <label class="form-label fw-semibold">Seniority Rank Level</label>
+                        <select name="level" id="edit_desig_level" class="form-select rounded-3">
+                            <option value="1">Junior Level (L1)</option>
+                            <option value="2">Mid Level (L2)</option>
+                            <option value="3">Senior Level (L3)</option>
+                            <option value="4">Lead Specialist (L4)</option>
+                            <option value="5">Principal / Director (L5)</option>
                         </select>
                     </div>
                 </div>
@@ -421,42 +399,17 @@
     </div>
 </div>
 
-<!-- Modal: Edit Designation 2 -->
-<div class="modal fade" id="editDesignationModal-2" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content rounded-4 border-0 shadow-lg">
-            <form onsubmit="event.preventDefault(); $('#editDesignationModal-2').modal('hide'); Swal.fire({icon:'success', title:'Designation Updated!', text:'Senior Product UX Designer updated.', confirmButtonColor: '#2563EB', customClass: {popup:'rounded-4 border-0 shadow-lg'}})">
-                <div class="modal-header border-bottom">
-                    <h5 class="modal-title fw-extrabold text-dark fs-6">Edit Designation: Senior Product UX Designer</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body fs-7">
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Designation Title *</label>
-                        <input type="text" class="form-control rounded-3" value="Senior Product UX Designer" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Department *</label>
-                        <select class="form-select rounded-3">
-                            @foreach($departments as $d)
-                                <option value="{{ $d->id }}">{{ $d->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Seniority Rank Band</label>
-                        <select class="form-select rounded-3">
-                            <option selected>Senior Level (L4)</option>
-                            <option>Lead / Principal (L5)</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer border-top">
-                    <button type="button" class="btn btn-light rounded-pill btn-sm px-3" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary rounded-pill btn-sm px-4">Update Designation</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+@push('scripts')
+<script>
+    function editDesignationModal(id, actionUrl, title, departmentId, level) {
+        document.getElementById('editDesignationForm').action = actionUrl;
+        document.getElementById('edit_desig_title').value = title;
+        document.getElementById('edit_desig_department_id').value = departmentId;
+        document.getElementById('edit_desig_level').value = level || 1;
+
+        var modal = new bootstrap.Modal(document.getElementById('editDesignationModal'));
+        modal.show();
+    }
+</script>
+@endpush
 @endsection

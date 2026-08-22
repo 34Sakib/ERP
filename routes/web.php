@@ -21,6 +21,7 @@ use App\Http\Controllers\Project\ProjectController;
 use App\Http\Controllers\NoticeBoard\NoticeBoardController;
 use App\Http\Controllers\Calendar\CalendarController;
 use App\Http\Controllers\Core\ProfileController;
+use App\Http\Controllers\Core\NotificationController;
 
 // Redirect root to dashboard
 Route::get('/', function () {
@@ -37,12 +38,27 @@ Route::middleware(['auth'])->group(function () {
     // 1. Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // Notifications API Routes
+    Route::post('notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::post('notifications/read-all', [NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
+    Route::get('notifications/fetch', [NotificationController::class, 'fetch'])->name('notifications.fetch');
+
     // 2. Core Structure Routes
     Route::resource('companies', CompanyController::class)->except(['create', 'edit']);
     Route::resource('branches', BranchController::class)->except(['create', 'edit']);
     Route::resource('departments', DepartmentController::class)->except(['create', 'edit']);
+    
+    // Designations CRUD
     Route::get('designations', [DepartmentController::class, 'designations'])->name('designations.index');
+    Route::post('designations', [DepartmentController::class, 'storeDesignation'])->name('designations.store');
+    Route::put('designations/{designation}', [DepartmentController::class, 'updateDesignation'])->name('designations.update');
+    Route::delete('designations/{designation}', [DepartmentController::class, 'destroyDesignation'])->name('designations.destroy');
+
+    // Teams CRUD
     Route::get('teams', [DepartmentController::class, 'teams'])->name('teams.index');
+    Route::post('teams', [DepartmentController::class, 'storeTeam'])->name('teams.store');
+    Route::put('teams/{team}', [DepartmentController::class, 'updateTeam'])->name('teams.update');
+    Route::delete('teams/{team}', [DepartmentController::class, 'destroyTeam'])->name('teams.destroy');
 
     // 3. Access Control RBAC Routes
     Route::resource('roles', RoleController::class)->except(['create', 'edit']);

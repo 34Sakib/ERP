@@ -12,6 +12,7 @@ use App\Models\Attendance\Attendance;
 use App\Models\Attendance\Shift;
 use App\Models\Attendance\Holiday;
 use App\Models\Attendance\AttendanceRegularization;
+use App\Helpers\NotificationHelper;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -48,6 +49,7 @@ class AttendanceController extends Controller
 
         $attendances = $query->latest()->paginate(15);
         $employees = Employee::where('employment_status', 'active')->get();
+        $departments = \App\Models\Core\Department::all();
 
         // Calculate Daily Stats
         $totalLate = Attendance::whereDate('date', $date)->where(function($q) {
@@ -94,7 +96,7 @@ class AttendanceController extends Controller
             'Absent' => $absentCount,
         ];
 
-        return view('attendance.index', compact('attendances', 'employees', 'stats', 'date', 'chartSeries', 'chartRawCounts'));
+        return view('attendance.index', compact('attendances', 'employees', 'departments', 'stats', 'date', 'chartSeries', 'chartRawCounts'));
     }
 
     /**
@@ -346,53 +348,111 @@ class AttendanceController extends Controller
     public function storeRegularization(Request $request)
     {
         $validated = $request->validate([
-            'employee_id' => 'required|exists:employees,id',
-            'requested_check_in' => 'required|date',
-            'requested_check_out' => 'required|date|after:requested_check_in',
+            'employee_id' => 'nullable|exists:employees,id',
+            'date' => 'required|date',
+            'entry_time' => 'nullable|string',
+            'exit_time' => 'nullable|string',
+            'requested_check_in' => 'nullable|date',
+            'requested_check_out' => 'nullable|date',
             'reason' => 'required|string|max:500',
         ]);
 
-        $date = Carbon::parse($validated['requested_check_in'])->format('Y-m-d');
-        $attendance = Attendance::where('employee_id', $validated['employee_id'])->whereDate('date', $date)->first();
+        $employeeId = $validated['employee_id'] ?? auth()->user()?->employee?->id ?? Employee::first()?->id;
+        $employee = Employee::find($employeeId);
 
-        AttendanceRegularization::create([
+        $dateStr = Carbon::parse($validated['date'])->format('Y-m-d');
+        
+        // Build requested check-in and check-out datetimes
+        if (!empty($validated['entry_time'])) {
+            $checkIn = Carbon::parse($dateStr . ' ' . $validated['entry_time']);
+        } elseif (!empty($validated['requested_check_in'])) {
+            $checkIn = Carbon::parse($validated['requested_check_in']);
+        } else {
+            $checkIn = Carbon::parse($dateStr . ' 09:00:00');
+        }
+
+        if (!empty($validated['exit_time'])) {
+            $checkOut = Carbon::parse($dateStr . ' ' . $validated['exit_time']);
+        } elseif (!empty($validated['requested_check_out'])) {
+            $checkOut = Carbon::parse($validated['requested_check_out']);
+        } else {
+            $checkOut = Carbon::parse($dateStr . ' 18:00:00');
+        }
+
+        $attendance = Attendance::where('employee_id', $employeeId)->whereDate('date', $dateStr)->first();
+
+        $reg = AttendanceRegularization::create([
             'attendance_id' => $attendance?->id,
-            'employee_id' => $validated['employee_id'],
-            'requested_check_in' => $validated['requested_check_in'],
-            'requested_check_out' => $validated['requested_check_out'],
+            'employee_id' => $employeeId,
+            'requested_check_in' => $checkIn,
+            'requested_check_out' => $checkOut,
             'reason' => $validated['reason'],
             'status' => 'pending',
         ]);
 
-        return redirect()->back()->with('success', 'Attendance regularization request submitted successfully.');
+        // Send System Notification to HR and Admin
+        NotificationHelper::notifyAdminsAndHR(
+            senderName: $employee ? $employee->full_name : (auth()->user()?->name ?? 'Employee'),
+            title: 'Requested Entry/Exit Edit for',
+            targetName: Carbon::parse($dateStr)->format('m/d/Y'),
+            body: 'Reason: ' . $validated['reason'] . ' (Entry: ' . $checkIn->format('h:i A') . ', Exit: ' . $checkOut->format('h:i A') . ')',
+            badgeIcon: 'bi-clock-history',
+            badgeColor: 'bg-warning',
+            actionUrl: route('attendance.regularizations.index')
+        );
+
+        return redirect()->back()->with('success', 'Attendance Entry/Exit edit request submitted to HR & Admin successfully.');
     }
 
-    public function approveRegularization(AttendanceRegularization $regularization)
+    public function approveRegularization(Request $request, AttendanceRegularization $regularization)
     {
-        DB::transaction(function () use ($regularization) {
+        // Allow HR/Admin to edit the entry/exit times before approving
+        $requestedCheckIn = $request->input('requested_check_in', $regularization->requested_check_in);
+        $requestedCheckOut = $request->input('requested_check_out', $regularization->requested_check_out);
+
+        $checkInDateTime = Carbon::parse($requestedCheckIn);
+        $checkOutDateTime = Carbon::parse($requestedCheckOut);
+        $dateStr = $checkInDateTime->format('Y-m-d');
+
+        DB::transaction(function () use ($regularization, $checkInDateTime, $checkOutDateTime, $dateStr) {
             $regularization->update([
+                'requested_check_in' => $checkInDateTime,
+                'requested_check_out' => $checkOutDateTime,
                 'status' => 'approved',
                 'approved_by' => auth()->id(),
                 'approved_at' => now(),
             ]);
 
             // Update associated Attendance record
-            $date = Carbon::parse($regularization->requested_check_in)->format('Y-m-d');
-            $workedMinutes = Carbon::parse($regularization->requested_check_in)->diffInMinutes(Carbon::parse($regularization->requested_check_out));
+            $workedMinutes = $checkInDateTime->diffInMinutes($checkOutDateTime);
 
             Attendance::updateOrCreate(
                 [
                     'employee_id' => $regularization->employee_id,
-                    'date' => $date,
+                    'date' => $dateStr,
                 ],
                 [
-                    'check_in' => $regularization->requested_check_in,
-                    'check_out' => $regularization->requested_check_out,
+                    'check_in' => $checkInDateTime,
+                    'check_out' => $checkOutDateTime,
                     'status' => 'present',
                     'total_worked_minutes' => $workedMinutes,
                 ]
             );
         });
+
+        // Notify Employee of approval
+        if ($regularization->employee?->user_id) {
+            NotificationHelper::send(
+                userId: $regularization->employee->user_id,
+                senderName: 'HR Department',
+                title: 'Entry/Exit Edit Request Approved for',
+                targetName: $dateStr,
+                body: 'Your attendance time request has been approved. Check-in: ' . $checkInDateTime->format('h:i A') . ', Check-out: ' . $checkOutDateTime->format('h:i A'),
+                badgeIcon: 'bi-check-circle-fill',
+                badgeColor: 'bg-success',
+                actionUrl: route('attendance.my')
+            );
+        }
 
         return redirect()->back()->with('success', 'Attendance regularization approved and attendance record updated.');
     }
@@ -404,6 +464,19 @@ class AttendanceController extends Controller
             'approved_by' => auth()->id(),
             'approved_at' => now(),
         ]);
+
+        if ($regularization->employee?->user_id) {
+            NotificationHelper::send(
+                userId: $regularization->employee->user_id,
+                senderName: 'HR Department',
+                title: 'Entry/Exit Edit Request Declined for',
+                targetName: $regularization->requested_check_in?->format('Y-m-d'),
+                body: 'Your attendance regularization request was declined by HR.',
+                badgeIcon: 'bi-x-circle-fill',
+                badgeColor: 'bg-danger',
+                actionUrl: route('attendance.my')
+            );
+        }
 
         return redirect()->back()->with('success', 'Attendance regularization request rejected.');
     }

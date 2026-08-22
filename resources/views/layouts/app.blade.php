@@ -1594,67 +1594,97 @@
                     <!-- Notifications Dropdown Popup (Refined Dynamic UI8 Style) -->
                     <div class="dropdown">
                         <button class="icon-btn-plain border-0 bg-transparent position-relative" type="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-bell"></i>
-                            @if(($unreadNotificationsCount ?? 0) > 0)
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-light" style="font-size: 0.65rem; padding: 0.25rem 0.4rem;">
-                                    {{ $unreadNotificationsCount }}
-                                </span>
-                            @endif
+                            <i class="bi bi-bell fs-5"></i>
+                            <span id="nav-unread-badge" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-light {{ ($unreadNotificationsCount ?? 0) > 0 ? '' : 'd-none' }}" style="font-size: 0.65rem; padding: 0.2rem 0.45rem;">
+                                {{ $unreadNotificationsCount ?? 0 }}
+                            </span>
                         </button>
-                        <div class="dropdown-menu dropdown-menu-end shadow-lg border-0 p-0 mt-2" style="width: 380px; border-radius: 18px; overflow: hidden; background: #ffffff;">
-                            <!-- Header with All / Unread Filter Tabs -->
-                            <div class="p-3 border-bottom d-flex justify-content-between align-items-center bg-white">
-                                <h5 class="mb-0 fw-bold fs-6 text-dark" style="letter-spacing: -0.01em;">Notifications</h5>
-                                <div class="d-flex gap-1 bg-light p-1 rounded-pill fs-8">
-                                    <button type="button" id="notif-tab-all" class="btn btn-sm py-0.5 px-3 rounded-pill fw-bold text-dark bg-white shadow-sm border-0 fs-8" onclick="filterNotifs('all')">All</button>
-                                    <button type="button" id="notif-tab-unread" class="btn btn-sm py-0.5 px-3 rounded-pill text-muted border-0 fs-8" onclick="filterNotifs('unread')">Unread ({{ $unreadNotificationsCount ?? 0 }})</button>
+                        <div class="dropdown-menu dropdown-menu-end shadow-lg border-0 p-0 mt-2" style="width: 420px; border-radius: 24px; overflow: hidden; background: #ffffff; box-shadow: 0 20px 50px rgba(0,0,0,0.12) !important;">
+                            
+                            <!-- 1. Top Header Bar -->
+                            <div class="px-4 py-3 border-bottom d-flex justify-content-between align-items-center bg-white">
+                                <h5 class="mb-0 fw-extrabold text-dark" style="font-size: 1.15rem; letter-spacing: -0.02em;">Notifications</h5>
+                                <div class="d-flex align-items-center gap-2 text-muted fs-7">
+                                    <button type="button" class="btn btn-light btn-sm rounded-circle p-1.5 border-0 text-muted" style="width: 32px; height: 32px;" title="Expand" onclick="window.location.href='{{ route('attendance.regularizations.index') }}'">
+                                        <i class="bi bi-arrows-angle-expand"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-light btn-sm rounded-circle p-1.5 border-0 text-muted" style="width: 32px; height: 32px;" data-bs-dismiss="dropdown" title="Close">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
                                 </div>
                             </div>
 
-                            <!-- Dynamic Notification Item List -->
-                            <div class="list-group list-group-flush" id="notif-container" style="max-height: 380px; overflow-y: auto;">
+                            <!-- 2. Sub Header Navigation Tabs -->
+                            <div class="px-4 border-bottom d-flex justify-content-between align-items-center bg-white" style="height: 48px;">
+                                <div class="d-flex align-items-center gap-4 h-100 fs-7 fw-bold">
+                                    <button type="button" id="notif-tab-all" class="btn btn-link text-decoration-none p-0 text-dark fw-extrabold h-100 d-flex align-items-center border-0"
+                                            style="border-bottom: 2.5px solid #111827 !important; border-radius: 0;" onclick="filterNotifs('all')">
+                                        Inbox <span class="badge rounded-pill bg-danger text-white ms-1.5 px-2 py-0.5 fs-8" id="notif-unread-badge">{{ $unreadNotificationsCount ?? 0 }}</span>
+                                    </button>
+                                    <button type="button" id="notif-tab-unread" class="btn btn-link text-decoration-none p-0 text-muted fw-bold h-100 d-flex align-items-center border-0"
+                                            style="border-bottom: 2.5px solid transparent !important; border-radius: 0;" onclick="filterNotifs('unread')">
+                                        System <span class="badge rounded-pill bg-light text-muted border ms-1.5 px-2 py-0.5 fs-8">2</span>
+                                    </button>
+                                </div>
+                                <button type="button" class="btn btn-link text-muted p-0 border-0" onclick="markAllNotifsAsRead()" title="Mark all read / Settings">
+                                    <i class="bi bi-gear-fill fs-6"></i>
+                                </button>
+                            </div>
+
+                            <!-- 3. Dynamic Notification Items Container -->
+                            <div class="list-group list-group-flush" id="notif-container" style="max-height: 420px; overflow-y: auto;">
                                 @forelse(($notificationsList ?? []) as $notif)
-                                    <div class="list-group-item p-3 border-bottom border-light notif-item-row {{ $notif->is_read ? 'notif-read' : 'notif-unread' }}">
+                                    <div class="list-group-item px-4 py-3.5 border-bottom border-light notif-item-row {{ $notif->is_read ? 'notif-read' : 'notif-unread' }}"
+                                         style="background: {{ $notif->is_read ? '#ffffff' : '#FAFAFA' }}; cursor: pointer;"
+                                         onclick="handleNotifClick('{{ $notif->id }}', '{{ $notif->action_url ?? route('attendance.regularizations.index') }}')">
                                         <div class="d-flex align-items-start gap-3">
+                                            <!-- Avatar with Status Dot -->
                                             <div class="position-relative flex-shrink-0">
                                                 <img src="{{ $notif->sender_avatar ?: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80' }}" class="rounded-circle" style="width: 44px; height: 44px; object-fit: cover;">
-                                                <span class="position-absolute bottom-0 end-0 text-white rounded-circle d-flex align-items-center justify-content-center {{ $notif->badge_color }}" style="width: 18px; height: 18px; font-size: 0.65rem; border: 2px solid #fff;">
-                                                    <i class="bi {{ $notif->badge_icon }}"></i>
-                                                </span>
+                                                <span class="position-absolute bottom-0 end-0 rounded-circle" style="width: 12px; height: 12px; background: {{ $notif->is_read ? '#9CA3AF' : '#22C55E' }}; border: 2.5px solid #ffffff;"></span>
                                             </div>
+                                            <!-- Content Area -->
                                             <div class="flex-grow-1">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <div>
-                                                        <strong class="fs-7 text-dark fw-bold">{{ $notif->sender_name }}</strong>
-                                                        <span class="text-muted fs-8 ms-1">{{ $notif->created_at->diffForHumans(null, true, true) }} ago</span>
+                                                <div class="d-flex justify-content-between align-items-start gap-2">
+                                                    <div class="fs-7 text-dark">
+                                                        <strong class="fw-extrabold text-dark">{{ $notif->sender_name }}</strong> {{ $notif->title }}
+                                                        @if($notif->target_name)
+                                                            <strong class="fw-extrabold text-dark">{{ $notif->target_name }}</strong>
+                                                        @endif
                                                     </div>
                                                     @if(!$notif->is_read)
-                                                        <span class="rounded-circle bg-success d-inline-block" style="width: 8px; height: 8px;" title="Unread"></span>
+                                                        <span class="rounded-circle flex-shrink-0 mt-1" style="width: 9px; height: 9px; background: #EF4444;" title="Unread"></span>
                                                     @endif
                                                 </div>
-                                                <div class="fs-8 text-secondary mt-0.5">
-                                                    {{ $notif->title }}
-                                                    @if($notif->target_name)
-                                                        <strong class="text-dark">{{ $notif->target_name }}</strong>
-                                                    @endif
+
+                                                <div class="fs-8 text-muted mt-0.5">
+                                                    {{ $notif->created_at->diffForHumans(null, true, true) }} ago • {{ $notif->category_label ?? 'ERP System' }}
                                                 </div>
+
                                                 @if($notif->body)
-                                                    <p class="mb-0 text-muted fs-8 mt-1 text-truncate" style="max-width: 260px;">{{ $notif->body }}</p>
+                                                    <div class="mt-2.5 p-2.5 rounded-3 fs-8 text-secondary" style="background: #F8FAFC; border-left: 3px solid #E2E8F0; max-width: 320px;">
+                                                        {{ $notif->body }}
+                                                    </div>
                                                 @endif
 
                                                 @if($notif->has_actions)
-                                                    <div class="d-flex gap-2 mt-2.5">
-                                                        <button type="button" class="btn btn-light btn-sm rounded-pill px-3 py-1 fs-8 fw-bold text-dark border-0" style="background: #EAEAEA;" onclick="Swal.fire('Declined', 'Action declined.', 'info')">{{ $notif->action_decline_label }}</button>
-                                                        <button type="button" class="btn btn-dark btn-sm rounded-pill px-3 py-1 fs-8 fw-bold text-white border-0" style="background: #222222;" onclick="Swal.fire('Accepted', 'Action accepted.', 'success')">{{ $notif->action_accept_label }}</button>
+                                                    <div class="d-flex gap-2 mt-3" onclick="event.stopPropagation();">
+                                                        <button type="button" class="btn btn-light btn-sm rounded-3 px-3 py-1.5 fs-8 fw-bold text-dark border border-light-subtle shadow-sm" style="background: #ffffff;" onclick="markNotifAsRead({{ $notif->id }}); Swal.fire('Declined', 'Request declined.', 'info');">{{ $notif->action_decline_label }}</button>
+                                                        <button type="button" class="btn btn-dark btn-sm rounded-3 px-3 py-1.5 fs-8 fw-bold text-white border-0 shadow-sm" style="background: #111827;" onclick="handleNotifClick('{{ $notif->id }}', '{{ $notif->action_url ?? route('attendance.regularizations.index') }}')">{{ $notif->action_accept_label }}</button>
+                                                    </div>
+                                                @else
+                                                    <div class="mt-2.5">
+                                                        <button type="button" class="btn btn-light btn-sm rounded-3 px-3 py-1 fs-8 fw-bold text-dark border border-light-subtle" style="background: #ffffff;" onclick="handleNotifClick('{{ $notif->id }}', '{{ $notif->action_url ?? route('attendance.regularizations.index') }}')">View Details</button>
                                                     </div>
                                                 @endif
                                             </div>
                                         </div>
                                     </div>
                                 @empty
-                                    <div class="p-4 text-center text-muted fs-8">
-                                        <i class="bi bi-bell-slash fs-4 d-block mb-1"></i>
-                                        No notifications found.
+                                    <div class="p-5 text-center text-muted fs-8">
+                                        <i class="bi bi-bell-slash fs-3 d-block mb-2 text-slate-300"></i>
+                                        <div class="fw-bold text-dark">No notifications right now</div>
+                                        <span class="fs-8 text-muted">All clear! Check back later for updates.</span>
                                     </div>
                                 @endforelse
                             </div>
@@ -1987,6 +2017,130 @@
             const currentTheme = document.documentElement.getAttribute('data-bs-theme') || 'light';
             applyThemeIcon(currentTheme);
         });
+
+        // Live Notifications AJAX Functions
+        function filterNotifs(filter) {
+            const tabAll = document.getElementById('notif-tab-all');
+            const tabUnread = document.getElementById('notif-tab-unread');
+
+            if (filter === 'all') {
+                tabAll.className = 'btn btn-link text-decoration-none p-0 text-dark fw-extrabold h-100 d-flex align-items-center border-0';
+                tabAll.style.borderBottom = '2.5px solid #111827';
+                tabUnread.className = 'btn btn-link text-decoration-none p-0 text-muted fw-bold h-100 d-flex align-items-center border-0';
+                tabUnread.style.borderBottom = '2.5px solid transparent';
+            } else {
+                tabUnread.className = 'btn btn-link text-decoration-none p-0 text-dark fw-extrabold h-100 d-flex align-items-center border-0';
+                tabUnread.style.borderBottom = '2.5px solid #111827';
+                tabAll.className = 'btn btn-link text-decoration-none p-0 text-muted fw-bold h-100 d-flex align-items-center border-0';
+                tabAll.style.borderBottom = '2.5px solid transparent';
+            }
+
+            fetch(`{{ route('notifications.fetch') }}?filter=${filter}`)
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById('notif-container');
+                    const badge = document.getElementById('notif-unread-badge');
+                    if (badge) badge.innerText = data.unread_count;
+
+                    const navBadge = document.getElementById('nav-unread-badge');
+                    if (navBadge) {
+                        navBadge.innerText = data.unread_count;
+                        if (data.unread_count > 0) {
+                            navBadge.classList.remove('d-none');
+                        } else {
+                            navBadge.classList.add('d-none');
+                        }
+                    }
+
+                    if (!data.notifications || data.notifications.length === 0) {
+                        container.innerHTML = `
+                            <div class="p-5 text-center text-muted fs-8">
+                                <i class="bi bi-bell-slash fs-3 d-block mb-2 text-slate-300"></i>
+                                <div class="fw-bold text-dark">No notifications right now</div>
+                                <span class="fs-8 text-muted">All clear! Check back later for updates.</span>
+                            </div>`;
+                        return;
+                    }
+
+                    let html = '';
+                    data.notifications.forEach(notif => {
+                        const avatar = notif.sender_avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80';
+                        const dotColor = notif.is_read ? '#9CA3AF' : '#22C55E';
+                        const unreadDot = notif.is_read ? '' : `<span class="rounded-circle flex-shrink-0 mt-1" style="width: 9px; height: 9px; background: #EF4444;" title="Unread" onclick="markNotifAsRead(${notif.id})"></span>`;
+                        const target = notif.target_name ? `<strong class="fw-extrabold text-dark">${notif.target_name}</strong>` : '';
+                        const body = notif.body ? `<div class="mt-2.5 p-2.5 rounded-3 fs-8 text-secondary" style="background: #F8FAFC; border-left: 3px solid #E2E8F0; max-width: 320px;">${notif.body}</div>` : '';
+                        
+                        const actionUrl = notif.action_url || "{{ route('attendance.regularizations.index') }}";
+                        const actionsHtml = notif.has_actions ? `
+                            <div class="d-flex gap-2 mt-3" onclick="event.stopPropagation();">
+                                <button type="button" class="btn btn-light btn-sm rounded-3 px-3 py-1.5 fs-8 fw-bold text-dark border border-light-subtle shadow-sm" style="background: #ffffff;" onclick="markNotifAsRead(${notif.id}); Swal.fire('Declined', 'Request declined.', 'info');">${notif.action_decline_label}</button>
+                                <button type="button" class="btn btn-dark btn-sm rounded-3 px-3 py-1.5 fs-8 fw-bold text-white border-0 shadow-sm" style="background: #111827;" onclick="handleNotifClick(${notif.id}, '${actionUrl}')">${notif.action_accept_label}</button>
+                            </div>` : `
+                            <div class="mt-2.5">
+                                <button type="button" class="btn btn-light btn-sm rounded-3 px-3 py-1 fs-8 fw-bold text-dark border border-light-subtle" style="background: #ffffff;" onclick="handleNotifClick(${notif.id}, '${actionUrl}')">View Details</button>
+                            </div>`;
+
+                        html += `
+                            <div class="list-group-item px-4 py-3.5 border-bottom border-light notif-item-row ${notif.is_read ? 'notif-read' : 'notif-unread'}"
+                                 style="background: ${notif.is_read ? '#ffffff' : '#FAFAFA'}; cursor: pointer;"
+                                 onclick="handleNotifClick(${notif.id}, '${actionUrl}')">
+                                <div class="d-flex align-items-start gap-3">
+                                    <div class="position-relative flex-shrink-0">
+                                        <img src="${avatar}" class="rounded-circle" style="width: 44px; height: 44px; object-fit: cover;">
+                                        <span class="position-absolute bottom-0 end-0 rounded-circle" style="width: 12px; height: 12px; background: ${dotColor}; border: 2.5px solid #ffffff;"></span>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-start gap-2">
+                                            <div class="fs-7 text-dark">
+                                                <strong class="fw-extrabold text-dark">${notif.sender_name}</strong> ${notif.title} ${target}
+                                            </div>
+                                            ${unreadDot}
+                                        </div>
+                                        <div class="fs-8 text-muted mt-0.5">
+                                            Just now • ERP System
+                                        </div>
+                                        ${body}
+                                        ${actionsHtml}
+                                    </div>
+                                </div>
+                            </div>`;
+                    });
+                    container.innerHTML = html;
+                });
+        }
+
+        function handleNotifClick(id, url) {
+            var targetUrl = url || "{{ route('attendance.regularizations.index') }}";
+            fetch(`/notifications/${id}/read`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                }
+            }).finally(function() {
+                window.location.href = targetUrl;
+            });
+        }
+
+        function markNotifAsRead(id) {
+            fetch(`/notifications/${id}/read`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                }
+            }).then(() => filterNotifs('all'));
+        }
+
+        function markAllNotifsAsRead() {
+            fetch('{{ route("notifications.read-all") }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                }
+            }).then(() => filterNotifs('all'));
+        }
     </script>
 
     <!-- Global Flash Message SweetAlert Popups (Centered 24px Card) -->

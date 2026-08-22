@@ -56,6 +56,17 @@ class Employee extends Model
         return "{$this->first_name} {$this->last_name}";
     }
 
+    public function getAvatarUrlAttribute(): string
+    {
+        if (!empty($this->profile_photo)) {
+            return asset($this->profile_photo);
+        }
+        if ($this->user && !empty($this->user->avatar)) {
+            return asset($this->user->avatar);
+        }
+        return 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80';
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

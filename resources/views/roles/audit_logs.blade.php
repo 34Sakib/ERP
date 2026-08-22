@@ -209,59 +209,41 @@
                 </tr>
             </thead>
             <tbody>
+                @forelse($auditLogs as $log)
                 <tr>
-                    <td><span class="fs-8 font-monospace text-dark fw-bold">2026-07-25 16:45:12</span></td>
+                    <td><span class="fs-8 font-monospace text-dark fw-bold">{{ $log->created_at?->format('Y-m-d H:i:s') }}</span></td>
                     <td>
                         <div class="d-flex align-items-center gap-2">
-                            <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" 
+                            <img src="{{ $log->user?->avatar ? asset($log->user->avatar) : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80' }}" 
                                  class="rounded-circle shadow-sm" style="width: 32px; height: 32px; object-fit: cover;">
                             <div>
-                                <div class="fw-bold text-dark fs-7">Sarah Connor</div>
-                                <div class="fs-8 text-muted font-monospace">Super Admin</div>
+                                <div class="fw-bold text-dark fs-7">{{ $log->user?->name ?? 'System' }}</div>
+                                <div class="fs-8 text-muted font-monospace">{{ $log->user?->getRoleNames()->first() ?? 'User' }}</div>
                             </div>
                         </div>
                     </td>
                     <td>
                         <span class="badge bg-purple bg-opacity-10 text-purple border border-purple-subtle px-2.5 py-1 rounded-pill fs-8" style="background: #F3E8FF; color: #7E22CE;">
-                            <i class="bi bi-shield-check me-1"></i> Role Permissions Updated
+                            <i class="bi bi-shield-check me-1"></i> {{ $log->action }}
                         </span>
                     </td>
-                    <td><span class="badge bg-light text-dark border px-2.5 py-1 fs-8">Access Control</span></td>
-                    <td><span class="fs-8 font-monospace text-secondary">192.168.1.45</span></td>
+                    <td><span class="badge bg-light text-dark border px-2.5 py-1 fs-8">{{ $log->auditable_type ? class_basename($log->auditable_type) : 'Core System' }}</span></td>
+                    <td><span class="fs-8 font-monospace text-secondary">{{ $log->ip_address ?? '127.0.0.1' }}</span></td>
                     <td class="text-end pe-3">
                         <button class="btn btn-light btn-sm text-primary rounded-circle p-1.5" style="width: 32px; height: 32px;"
-                                onclick="Swal.fire({title: 'Audit Detail', html: '<div class=\'text-start fs-7\'><p><b>Action:</b> Role Permissions Updated</p><p><b>Target:</b> HR Manager Role</p><p><b>IP:</b> 192.168.1.45</p><p><b>Browser:</b> Chrome v126 (Windows)</p></div>', confirmButtonColor: '#2563EB'})">
+                                onclick="Swal.fire({title: 'Audit Detail', html: '<div class=\'text-start fs-7\'><p><b>Action:</b> {{ addslashes($log->action) }}</p><p><b>IP:</b> {{ $log->ip_address ?? '127.0.0.1' }}</p><p><b>User:</b> {{ addslashes($log->user?->name ?? 'System') }}</p></div>', confirmButtonColor: '#2563EB'})">
                             <i class="bi bi-eye-fill"></i>
                         </button>
                     </td>
                 </tr>
-
+                @empty
                 <tr>
-                    <td><span class="fs-8 font-monospace text-dark fw-bold">2026-07-25 15:20:08</span></td>
-                    <td>
-                        <div class="d-flex align-items-center gap-2">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" 
-                                 class="rounded-circle shadow-sm" style="width: 32px; height: 32px; object-fit: cover;">
-                            <div>
-                                <div class="fw-bold text-dark fs-7">Michael Scott</div>
-                                <div class="fs-8 text-muted font-monospace">Finance Admin</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <span class="badge bg-emerald bg-opacity-10 text-success border border-success-subtle px-2.5 py-1 rounded-pill fs-8" style="background: #ECFDF5; color: #059669;">
-                            <i class="bi bi-currency-dollar me-1"></i> July Payroll Executed
-                        </span>
-                    </td>
-                    <td><span class="badge bg-light text-dark border px-2.5 py-1 fs-8">Payroll & Finance</span></td>
-                    <td><span class="fs-8 font-monospace text-secondary">192.168.1.88</span></td>
-                    <td class="text-end pe-3">
-                        <button class="btn btn-light btn-sm text-primary rounded-circle p-1.5" style="width: 32px; height: 32px;"
-                                onclick="Swal.fire({title: 'Audit Detail', html: '<div class=\'text-start fs-7\'><p><b>Action:</b> July Payroll Executed</p><p><b>Target:</b> $128,450 Direct Deposit</p><p><b>IP:</b> 192.168.1.88</p></div>', confirmButtonColor: '#2563EB'})">
-                            <i class="bi bi-eye-fill"></i>
-                        </button>
+                    <td colspan="6" class="text-center p-4 text-muted fs-8">
+                        <i class="bi bi-shield-slash fs-4 d-block mb-1"></i>
+                        No audit logs recorded yet.
                     </td>
                 </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

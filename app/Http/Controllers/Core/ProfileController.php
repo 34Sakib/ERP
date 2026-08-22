@@ -45,12 +45,18 @@ class ProfileController extends Controller
         // Sync with linked Employee record if present
         if ($user->employee) {
             $nameParts = explode(' ', $request->name, 2);
-            $user->employee->update([
+            $employeeData = [
                 'first_name' => $nameParts[0],
                 'last_name' => $nameParts[1] ?? '',
                 'personal_email' => $request->email,
                 'phone' => $request->phone ?? $user->employee->phone,
-            ]);
+            ];
+
+            if ($user->avatar) {
+                $employeeData['profile_photo'] = $user->avatar;
+            }
+
+            $user->employee->update($employeeData);
         }
 
         if ($request->ajax() || $request->wantsJson() || $request->header('X-Requested-With') === 'XMLHttpRequest') {

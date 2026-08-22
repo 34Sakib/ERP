@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Core\Department;
 use App\Models\Core\Branch;
 use App\Models\Core\Company;
+use App\Models\Core\Designation;
+use App\Models\Core\Team;
+use App\Models\Employee\Employee;
 
 class DepartmentController extends Controller
 {
@@ -21,13 +24,88 @@ class DepartmentController extends Controller
     public function designations()
     {
         $departments = Department::all();
-        return view('designations.index', compact('departments'));
+        $designations = Designation::with('department')->withCount('employees')->get();
+        return view('designations.index', compact('departments', 'designations'));
+    }
+
+    public function storeDesignation(Request $request)
+    {
+        $validated = $request->validate([
+            'department_id' => 'required|exists:departments,id',
+            'title' => 'required|string|max:191',
+            'level' => 'nullable|integer',
+            'status' => 'nullable|boolean',
+        ]);
+
+        $validated['status'] = $request->has('status') ? (bool)$request->status : true;
+
+        Designation::create($validated);
+        return back()->with('success', 'Designation title created successfully.');
+    }
+
+    public function updateDesignation(Request $request, Designation $designation)
+    {
+        $validated = $request->validate([
+            'department_id' => 'required|exists:departments,id',
+            'title' => 'required|string|max:191',
+            'level' => 'nullable|integer',
+            'status' => 'nullable|boolean',
+        ]);
+
+        $validated['status'] = $request->has('status') ? (bool)$request->status : true;
+
+        $designation->update($validated);
+        return back()->with('success', 'Designation title updated successfully.');
+    }
+
+    public function destroyDesignation(Designation $designation)
+    {
+        $designation->delete();
+        return back()->with('success', 'Designation deleted successfully.');
     }
 
     public function teams()
     {
         $departments = Department::all();
-        return view('teams.index', compact('departments'));
+        $teams = Team::with(['department', 'lead'])->withCount('members')->get();
+        $employees = Employee::all();
+        return view('teams.index', compact('departments', 'teams', 'employees'));
+    }
+
+    public function storeTeam(Request $request)
+    {
+        $validated = $request->validate([
+            'department_id' => 'required|exists:departments,id',
+            'name' => 'required|string|max:191',
+            'lead_employee_id' => 'nullable|exists:employees,id',
+            'status' => 'nullable|boolean',
+        ]);
+
+        $validated['status'] = $request->has('status') ? (bool)$request->status : true;
+
+        Team::create($validated);
+        return back()->with('success', 'Team squad created successfully.');
+    }
+
+    public function updateTeam(Request $request, Team $team)
+    {
+        $validated = $request->validate([
+            'department_id' => 'required|exists:departments,id',
+            'name' => 'required|string|max:191',
+            'lead_employee_id' => 'nullable|exists:employees,id',
+            'status' => 'nullable|boolean',
+        ]);
+
+        $validated['status'] = $request->has('status') ? (bool)$request->status : true;
+
+        $team->update($validated);
+        return back()->with('success', 'Team squad updated successfully.');
+    }
+
+    public function destroyTeam(Team $team)
+    {
+        $team->delete();
+        return back()->with('success', 'Team squad deleted successfully.');
     }
 
     public function store(Request $request)

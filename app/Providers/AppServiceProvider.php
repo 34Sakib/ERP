@@ -24,8 +24,16 @@ class AppServiceProvider extends ServiceProvider
     {
         View::composer('layouts.app', function ($view) {
             if (Schema::hasTable('notifications')) {
-                $notificationsList = Notification::latest()->take(10)->get();
-                $unreadNotificationsCount = Notification::where('is_read', false)->count();
+                $user = auth()->user();
+                $userId = $user?->id;
+
+                $notificationsList = Notification::where(function($q) use ($userId) {
+                    $q->whereNull('user_id')->orWhere('user_id', $userId);
+                })->latest()->take(10)->get();
+
+                $unreadNotificationsCount = Notification::where(function($q) use ($userId) {
+                    $q->whereNull('user_id')->orWhere('user_id', $userId);
+                })->where('is_read', false)->count();
             } else {
                 $notificationsList = collect([]);
                 $unreadNotificationsCount = 0;

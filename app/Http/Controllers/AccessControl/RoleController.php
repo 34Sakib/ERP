@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\Models\Core\AuditLog;
 
 class RoleController extends Controller
 {
@@ -25,7 +26,8 @@ class RoleController extends Controller
 
     public function auditLogs()
     {
-        return view('roles.audit_logs');
+        $auditLogs = AuditLog::with('user')->latest()->paginate(15);
+        return view('roles.audit_logs', compact('auditLogs'));
     }
 
     public function store(Request $request)

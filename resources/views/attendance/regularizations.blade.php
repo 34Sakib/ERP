@@ -117,7 +117,7 @@
                     <tr>
                         <td>
                             <div class="d-flex align-items-center gap-2.5">
-                                <img src="{{ $reg->employee->profile_photo ? asset($reg->employee->profile_photo) : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80' }}" 
+                                <img src="{{ $reg->employee?->avatar_url }}" 
                                      class="rounded-circle shadow-sm" style="width: 38px; height: 38px; object-fit: cover;">
                                 <div>
                                     <div class="fw-bold text-dark">{{ $reg->employee->full_name }}</div>
@@ -158,12 +158,10 @@
                         <td class="text-end pe-3">
                             @if($reg->status === 'pending')
                                 <div class="d-flex justify-content-end align-items-center gap-1.5">
-                                    <form action="{{ route('attendance.regularizations.approve', $reg->id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="btn btn-sm btn-success rounded-pill px-3 fs-8 fw-bold">
-                                            <i class="bi bi-check-circle me-1"></i> Approve
-                                        </button>
-                                    </form>
+                                    <button type="button" class="btn btn-sm btn-success rounded-pill px-3 fs-8 fw-bold"
+                                            onclick="openApproveEditModal('{{ $reg->id }}', '{{ route('attendance.regularizations.approve', $reg->id) }}', '{{ addslashes($reg->employee->full_name) }}', '{{ $reg->requested_check_in->format('Y-m-d\TH:i') }}', '{{ $reg->requested_check_out->format('Y-m-d\TH:i') }}')">
+                                        <i class="bi bi-pencil-square me-1"></i> Edit & Approve
+                                    </button>
                                     <form action="{{ route('attendance.regularizations.reject', $reg->id) }}" method="POST">
                                         @csrf
                                         <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill px-3 fs-8 fw-bold">
@@ -241,4 +239,55 @@
         </div>
     </div>
 </div>
+
+<!-- Modal: HR Edit & Approve Regularization -->
+<div class="modal fade" id="hrApproveEditModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 border-0 shadow-lg">
+            <form id="hrApproveForm" action="" method="POST">
+                @csrf
+                <div class="modal-header border-bottom px-4 py-3 bg-light bg-opacity-50">
+                    <h5 class="modal-title fw-bold text-dark fs-6">Review & Approve Punch Adjustment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 fs-7">
+                    <div class="alert alert-info py-2 px-3 fs-8 rounded-3 mb-3 d-flex align-items-center gap-2">
+                        <i class="bi bi-info-circle-fill text-info fs-6"></i>
+                        <div>Review or modify the entry/exit time below before granting approval to employee <strong id="approve_emp_name"></strong>.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-dark fs-7 mb-1">Approved Check-In Time</label>
+                        <input type="datetime-local" name="requested_check_in" id="approve_check_in" class="form-control rounded-3 fs-8" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold text-dark fs-7 mb-1">Approved Check-Out Time</label>
+                        <input type="datetime-local" name="requested_check_out" id="approve_check_out" class="form-control rounded-3 fs-8" required>
+                    </div>
+                </div>
+                <div class="modal-footer border-top px-4 py-3">
+                    <button type="button" class="btn btn-light rounded-pill px-4 fs-8 fw-bold" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success rounded-pill px-4 fs-8 fw-bold">
+                        <i class="bi bi-check-circle me-1"></i> Confirm & Approve
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+    function openApproveEditModal(id, actionUrl, empName, checkIn, checkOut) {
+        document.getElementById('hrApproveForm').action = actionUrl;
+        document.getElementById('approve_emp_name').innerText = empName;
+        document.getElementById('approve_check_in').value = checkIn;
+        document.getElementById('approve_check_out').value = checkOut;
+
+        var modal = new bootstrap.Modal(document.getElementById('hrApproveEditModal'));
+        modal.show();
+    }
+</script>
+@endpush
 @endsection

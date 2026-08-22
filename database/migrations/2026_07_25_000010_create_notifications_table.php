@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('target_name')->nullable();
             $table->text('body')->nullable();
+            $table->string('action_url')->nullable();
             $table->boolean('has_actions')->default(false);
             $table->string('action_decline_label')->default('Decline');
             $table->string('action_accept_label')->default('Accept');

@@ -472,7 +472,7 @@
                         <td><span class="emp-code-chip">{{ $emp->employee_code }}</span></td>
                         <td>
                             <div class="d-flex align-items-center gap-3">
-                                <img src="{{ $emp->profile_photo ? asset($emp->profile_photo) : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80' }}" 
+                                <img src="{{ $emp->avatar_url }}" 
                                      class="emp-avatar-box" alt="Avatar">
                                 <div class="overflow-hidden">
                                     <a href="{{ route('employees.show', $emp->id) }}" class="fw-bold text-dark text-decoration-none hover-primary fs-7 d-block text-truncate">

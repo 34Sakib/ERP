@@ -233,7 +233,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr id="team-row-1">
+            <tbody>
+                @forelse($teams as $team)
+                <tr>
                     <td class="ps-3"><input type="checkbox" class="form-check-input row-checkbox"></td>
                     <td>
                         <div class="d-flex align-items-center gap-2.5">
@@ -241,37 +243,58 @@
                                 <i class="bi bi-diagram-3-fill fs-6"></i>
                             </div>
                             <div>
-                                <div class="fw-bold text-dark fs-7" id="team-title-1">Frontend Architecture Guild</div>
-                                <div class="fs-8 text-muted">Core Web UI Engineering</div>
+                                <div class="fw-bold text-dark fs-7">{{ $team->name }}</div>
+                                <div class="fs-8 text-muted">Working Squad</div>
                             </div>
                         </div>
                     </td>
                     <td>
+                        @if($team->lead)
                         <div class="d-flex align-items-center gap-2">
-                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80" 
+                            <img src="{{ $team->lead->avatar_url }}" 
                                  class="rounded-circle shadow-sm" style="width: 32px; height: 32px; object-fit: cover;">
                             <div>
-                                <div class="fw-bold text-dark fs-7">Michael Scott</div>
-                                <div class="fs-8 text-muted font-monospace">Lead Tech</div>
+                                <div class="fw-bold text-dark fs-7">{{ $team->lead->full_name }}</div>
+                                <div class="fs-8 text-muted font-monospace">Team Lead</div>
                             </div>
                         </div>
+                        @else
+                        <span class="text-muted fs-8">Unassigned</span>
+                        @endif
                     </td>
-                    <td><span class="badge bg-light text-dark border px-2.5 py-1 fs-8">Engineering</span></td>
-                    <td><span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2.5 py-1 rounded-pill fs-8">8 Members</span></td>
+                    <td><span class="badge bg-light text-dark border px-2.5 py-1 fs-8">{{ $team->department?->name ?? 'General' }}</span></td>
+                    <td><span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle px-2.5 py-1 rounded-pill fs-8">{{ $team->members_count }} Members</span></td>
                     <td>
-                        <span class="status-badge-dot active"><span class="status-dot-pulse"></span> Active</span>
+                        @if($team->status)
+                            <span class="status-badge-dot active"><span class="status-dot-pulse"></span> Active</span>
+                        @else
+                            <span class="status-badge-dot inactive">Inactive</span>
+                        @endif
                     </td>
                     <td class="text-end pe-3">
                         <div class="d-flex justify-content-end align-items-center gap-1">
-                            <button class="btn btn-light btn-sm text-primary rounded-circle p-1.5" style="width: 32px; height: 32px;" data-bs-toggle="modal" data-bs-target="#editTeamModal-1" title="Edit Team">
+                            <button class="btn btn-light btn-sm text-primary rounded-circle p-1.5" style="width: 32px; height: 32px;"
+                                    onclick="editTeamModal('{{ $team->id }}', '{{ route('teams.update', $team->id) }}', '{{ addslashes($team->name) }}', '{{ $team->department_id }}', '{{ $team->lead_employee_id }}')" title="Edit Team">
                                 <i class="bi bi-pencil-fill"></i>
                             </button>
-                            <button class="btn btn-light btn-sm text-danger rounded-circle p-1.5" style="width: 32px; height: 32px;" title="Delete Team" onclick="if(confirm('Delete Frontend Architecture Guild?')){ document.getElementById('team-row-1').remove(); Swal.fire({icon:'success', title:'Deleted!', text:'Team deleted successfully.', timer:1500, showConfirmButton:false}); }">
-                                <i class="bi bi-trash"></i>
-                            </button>
+                            <form action="{{ route('teams.destroy', $team->id) }}" method="POST" onsubmit="return confirm('Delete {{ addslashes($team->name) }} squad?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-light btn-sm text-danger rounded-circle p-1.5" style="width: 32px; height: 32px;" title="Delete Team">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
                         </div>
                     </td>
                 </tr>
+                @empty
+                <tr>
+                    <td colspan="7" class="text-center p-4 text-muted fs-8">
+                        <i class="bi bi-diagram-3 fs-4 d-block mb-1"></i>
+                        No team squads created yet.
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
@@ -281,7 +304,8 @@
 <div class="modal fade" id="createTeamModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content rounded-4 border-0 shadow-lg">
-            <form onsubmit="event.preventDefault(); $('#createTeamModal').modal('hide'); Swal.fire({icon:'success', title:'Team Created!', text:'New working squad added.', confirmButtonColor: '#2563EB', customClass: {popup:'rounded-4 border-0 shadow-lg'}})">
+            <form action="{{ route('teams.store') }}" method="POST">
+                @csrf
                 <div class="modal-header border-bottom">
                     <h5 class="modal-title fw-extrabold text-dark fs-6">Create New Team Squad</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -289,15 +313,21 @@
                 <div class="modal-body fs-7">
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Team Squad Name *</label>
-                        <input type="text" class="form-control rounded-3" required placeholder="e.g. DevOps Infrastructure Taskforce">
+                        <input type="text" name="name" class="form-control rounded-3" required placeholder="e.g. DevOps Infrastructure Taskforce">
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Team Leader</label>
-                        <input type="text" class="form-control rounded-3" placeholder="e.g. Michael Scott">
+                        <select name="lead_employee_id" class="form-select rounded-3">
+                            <option value="">Select Team Leader</option>
+                            @foreach($employees as $emp)
+                                <option value="{{ $emp->id }}">{{ $emp->full_name }} ({{ $emp->employee_code }})</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Department Scope</label>
-                        <select class="form-select rounded-3">
+                        <label class="form-label fw-semibold">Department Scope *</label>
+                        <select name="department_id" class="form-select rounded-3" required>
+                            <option value="">Select Department</option>
                             @foreach($departments as $d)
                                 <option value="{{ $d->id }}">{{ $d->name }}</option>
                             @endforeach
@@ -313,29 +343,36 @@
     </div>
 </div>
 
-<!-- Modal: Edit Team 1 -->
-<div class="modal fade" id="editTeamModal-1" tabindex="-1">
+<!-- Modal: Dynamic Edit Team -->
+<div class="modal fade" id="editTeamModal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content rounded-4 border-0 shadow-lg">
-            <form onsubmit="event.preventDefault(); $('#editTeamModal-1').modal('hide'); Swal.fire({icon:'success', title:'Team Updated!', text:'Frontend Architecture Guild updated.', confirmButtonColor: '#2563EB', customClass: {popup:'rounded-4 border-0 shadow-lg'}})">
+            <form id="editTeamForm" action="" method="POST">
+                @csrf
+                @method('PUT')
                 <div class="modal-header border-bottom">
-                    <h5 class="modal-title fw-extrabold text-dark fs-6">Edit Team: Frontend Architecture Guild</h5>
+                    <h5 class="modal-title fw-extrabold text-dark fs-6">Edit Team Squad</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body fs-7">
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Team Squad Name *</label>
-                        <input type="text" class="form-control rounded-3" value="Frontend Architecture Guild" required>
+                        <input type="text" name="name" id="edit_team_name" class="form-control rounded-3" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Team Leader</label>
-                        <input type="text" class="form-control rounded-3" value="Michael Scott">
+                        <select name="lead_employee_id" id="edit_team_lead_id" class="form-select rounded-3">
+                            <option value="">Select Team Leader</option>
+                            @foreach($employees as $emp)
+                                <option value="{{ $emp->id }}">{{ $emp->full_name }} ({{ $emp->employee_code }})</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Department Scope</label>
-                        <select class="form-select rounded-3">
+                        <label class="form-label fw-semibold">Department Scope *</label>
+                        <select name="department_id" id="edit_team_department_id" class="form-select rounded-3" required>
                             @foreach($departments as $d)
-                                <option value="{{ $d->id }}" {{ $d->name == 'Engineering' ? 'selected' : '' }}>{{ $d->name }}</option>
+                                <option value="{{ $d->id }}">{{ $d->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -348,4 +385,17 @@
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    function editTeamModal(id, actionUrl, name, departmentId, leadId) {
+        document.getElementById('editTeamForm').action = actionUrl;
+        document.getElementById('edit_team_name').value = name;
+        document.getElementById('edit_team_department_id').value = departmentId;
+        document.getElementById('edit_team_lead_id').value = leadId || '';
+
+        var modal = new bootstrap.Modal(document.getElementById('editTeamModal'));
+        modal.show();
+    }
+</script>
 @endsection

@@ -16,6 +16,7 @@ class Notification extends Model
         'title',
         'target_name',
         'body',
+        'action_url',
         'has_actions',
         'action_decline_label',
         'action_accept_label',

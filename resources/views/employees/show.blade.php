@@ -76,7 +76,7 @@
     <div class="row align-items-center g-3">
         <div class="col-12 col-md-7">
             <div class="d-flex align-items-center gap-3.5">
-                <img src="{{ $employee->profile_photo ? asset($employee->profile_photo) : 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80' }}" 
+                <img src="{{ $employee->avatar_url }}" 
                      alt="Avatar" class="profile-avatar-xl">
                 <div>
                     <div class="d-flex align-items-center gap-2 mb-1">
